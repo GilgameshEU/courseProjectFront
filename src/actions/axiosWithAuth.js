@@ -6,7 +6,7 @@ const axiosJWT = axios.create();
 const setAuthorizationHeader = async (token, expire) => {
   const currentDate = new Date();
   if (expire * 1000 < currentDate.getTime()) {
-    const response = await axios.get("http://localhost:5000/token");
+    const response = await axios.get("https://coursebackproject.onrender.com/token");
     axiosJWT.defaults.headers.common.Authorization = `Bearer ${response.data.accessToken}`;
     const decoded = jwt_decode(response.data.accessToken);
     return {
@@ -34,7 +34,7 @@ axiosJWT.interceptors.request.use(
 
 export const updateStatusAndRole = async (id, newStatus, newRole) => {
   try {
-    const response = await axiosJWT.put(`http://localhost:5000/users/${id}/updateStatusAndRole`, {
+    const response = await axiosJWT.put(`https://coursebackproject.onrender.com/users/${id}/updateStatusAndRole`, {
       role: newRole,
       status: newStatus,
     });
@@ -46,14 +46,14 @@ export const updateStatusAndRole = async (id, newStatus, newRole) => {
 
 export const deleteUser = async (id) => {
   try {
-    await axiosJWT.delete(`http://localhost:5000/users/${id}/delete`);
+    await axiosJWT.delete(`https://coursebackproject.onrender.com/users/${id}/delete`);
   } catch (error) {
     console.error(error);
   }
 };
 
 export const getUsers = async () => {
-  const response = await axiosJWT.get("http://localhost:5000/users");
+  const response = await axiosJWT.get("https://coursebackproject.onrender.com/users");
   return response.data;
 };
 // export const getUsers = async () => {

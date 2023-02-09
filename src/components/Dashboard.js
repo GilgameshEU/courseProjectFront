@@ -62,7 +62,7 @@ const Dashboard = () => {
 
   const updateStatusAndRole = async (id, newStatus, newRole) => {
     try {
-      const response = await axios.put(`http://localhost:5000/users/${id}/updateStatusAndRole`, {
+      const response = await axios.put(`https://coursebackproject.onrender.com/users/${id}/updateStatusAndRole`, {
         role: newRole,
         status: newStatus,
       });
@@ -80,7 +80,7 @@ const Dashboard = () => {
 
   const deleteUser = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/users/${id}/delete`, {
+      await axios.delete(`https://coursebackproject.onrender.com/users/${id}/delete`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
