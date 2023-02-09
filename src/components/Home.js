@@ -27,7 +27,7 @@ const Home = () => {
     <div className={classes.root}>
       <Grid container className={classes.formContainer}>
         <Grid item xs={6}>
-          <Paper className={classes.formPaper}></Paper>
+          <Paper className={classes.formPaper}>123</Paper>
         </Grid>
       </Grid>
     </div>
