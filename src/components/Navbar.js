@@ -41,7 +41,7 @@ const Navbar = () => {
 
   const Logout = async () => {
     try {
-      await axios.delete("http://localhost:5000/logout");
+      await axios.delete("https://coursebackproject.onrender.com/logout");
       navigate("/");
     } catch (error) {
       console.log(error);
@@ -62,7 +62,7 @@ const Navbar = () => {
 
   const refreshToken = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/token");
+      const response = await axios.get("https://coursebackproject.onrender.com/token");
       setToken(response.data.accessToken);
       const decoded = jwt_decode(response.data.accessToken);
       setName(decoded.name);
