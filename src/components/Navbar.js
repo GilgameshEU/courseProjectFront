@@ -119,7 +119,7 @@ const Navbar = () => {
               handleClose();
               navigate("/register");
             }}>
-            Register
+            Register1
           </Button>
         </Box>
       </Popover>
