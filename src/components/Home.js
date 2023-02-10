@@ -43,21 +43,21 @@ const Home = () => {
   const classes = useStyles();
   const [items, setItems] = useState([]);
 
-  useEffect(() => {
-    const fetchItems = async () => {
-      try {
-        const response = await axios.get("/api/items");
-        setItems(response.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchItems();
-  }, []);
+  // useEffect(() => {
+  //   const fetchItems = async () => {
+  //     try {
+  //       const response = await axios.get("/api/items");
+  //       setItems(response.data);
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   };
+  //   fetchItems();
+  // }, []);
 
   return (
     <div className={classes.root}>
-      <Grid container className={classes.formContainer}>
+      {/* <Grid container className={classes.formContainer}>
         <Grid item xs={6}>
           <Paper className={classes.formPaper}>
             <h2>Welcome to Your Collection</h2>
@@ -72,7 +72,7 @@ const Home = () => {
             </div>
           </Paper>
         </Grid>
-      </Grid>
+      </Grid> */}
     </div>
   );
 };
