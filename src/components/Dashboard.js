@@ -7,7 +7,8 @@ import { DataGrid } from "@material-ui/data-grid";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { Box, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
-
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@material-ui/core";
+import { API_URL } from "./Login";
 //import { updateStatusAndRole, deleteUser, getUsers } from "../actions/axiosWithAuth";
 
 const Dashboard = () => {
@@ -17,8 +18,9 @@ const Dashboard = () => {
   const [users, setUsers] = useState([]);
   const navigate = useNavigate();
   const theme = useTheme();
-
   const [role, setRole] = useState("");
+
+  const [open, setOpen] = useState(false);
 
   const useDataGridStyles = makeStyles({
     gridContainer: {
@@ -47,7 +49,7 @@ const Dashboard = () => {
 
   const refreshToken = async () => {
     try {
-      const response = await axios.get("https://coursebackproject.onrender.com/token");
+      const response = await axios.get(`${API_URL}token`);
       setToken(response.data.accessToken);
       const decoded = jwt_decode(response.data.accessToken);
       setName(decoded.name);
@@ -62,14 +64,10 @@ const Dashboard = () => {
 
   const updateStatusAndRole = async (id, newStatus, newRole) => {
     try {
-      const response = await axios.put(`https://coursebackproject.onrender.com/users/${id}/updateStatusAndRole`, {
+      const response = await axios.put(`${API_URL}users/${id}/updateStatusAndRole`, {
         role: newRole,
         status: newStatus,
       });
-      console.log(newRole);
-      console.log(newStatus);
-      console.log(id);
-
       getUsers();
 
       return response.data;
@@ -80,7 +78,7 @@ const Dashboard = () => {
 
   const deleteUser = async (id) => {
     try {
-      await axios.delete(`https://coursebackproject.onrender.com/users/${id}/delete`, {
+      await axios.delete(`${API_URL}users/${id}/delete`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -96,7 +94,7 @@ const Dashboard = () => {
     async (config) => {
       const currentDate = new Date();
       if (expire * 1000 < currentDate.getTime()) {
-        const response = await axios.get("https://coursebackproject.onrender.com/token");
+        const response = await axios.get(`${API_URL}token`);
         config.headers.Authorization = `Bearer ${response.data.accessToken}`;
         setToken(response.data.accessToken);
         const decoded = jwt_decode(response.data.accessToken);
@@ -112,7 +110,7 @@ const Dashboard = () => {
   );
 
   const getUsers = async () => {
-    const response = await axiosJWT.get("https://coursebackproject.onrender.com/users", {
+    const response = await axiosJWT.get(`${API_URL}users`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

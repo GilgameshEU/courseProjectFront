@@ -14,6 +14,8 @@ import React, { useState, useEffect } from "react";
 import jwt_decode from "jwt-decode";
 import { Box, Typography } from "@material-ui/core";
 
+import { API_URL } from "./Login";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -41,7 +43,7 @@ const Navbar = () => {
 
   const Logout = async () => {
     try {
-      await axios.delete("https://coursebackproject.onrender.com/logout");
+      await axios.delete(`${API_URL}logout`);
       navigate("/");
     } catch (error) {
       console.log(error);
@@ -62,7 +64,7 @@ const Navbar = () => {
 
   const refreshToken = async () => {
     try {
-      const response = await axios.get("https://coursebackproject.onrender.com/token");
+      const response = await axios.get(`${API_URL}token`);
       setToken(response.data.accessToken);
       const decoded = jwt_decode(response.data.accessToken);
       setName(decoded.name);

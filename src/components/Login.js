@@ -4,6 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Paper, TextField, Button } from "@material-ui/core";
 
+// const API_URL = "https://coursebackproject.onrender.com/";
+export const API_URL = `http://localhost:5000/`;
+
 const useStyles = makeStyles((theme) => ({
   root: {
     height: "100vh",
@@ -26,11 +29,10 @@ const Login = () => {
   const [msg, setMsg] = useState("");
   const navigate = useNavigate();
   const classes = useStyles();
-
   const Auth = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("https://coursebackproject.onrender.com/login", {
+      await axios.post(`${API_URL}login`, {
         email: email,
         password: password,
       });

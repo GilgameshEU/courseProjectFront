@@ -5,6 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import { API_URL } from "./Login";
 
 const useStyles = makeStyles({
   form: {
@@ -29,7 +30,7 @@ const Register = () => {
   const Register = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("https://coursebackproject.onrender.com/users", {
+      await axios.post(`${API_URL}users`, {
         name: name,
         email: email,
         password: password,
