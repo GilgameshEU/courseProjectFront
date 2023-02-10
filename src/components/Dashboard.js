@@ -8,7 +8,7 @@ import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { Box, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
 
-import { updateStatusAndRole, deleteUser, getUsers } from "../actions/axiosWithAuth";
+//import { updateStatusAndRole, deleteUser, getUsers } from "../actions/axiosWithAuth";
 
 const Dashboard = () => {
   const [name, setName] = useState("");
