@@ -4,12 +4,13 @@ import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Button from "@material-ui/core/Button";
-import PersonIcon from "@material-ui/icons/Person";
 import SearchIcon from "@material-ui/icons/Search";
 import HomeIcon from "@material-ui/icons/Home";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import Popover from "@material-ui/core/Popover";
-
+import LanguageIcon from "@material-ui/icons/Language";
+import Brightness4Icon from "@material-ui/icons/Brightness4";
+import Brightness7Icon from "@material-ui/icons/Brightness7";
+import InputBase from "@material-ui/core/InputBase";
 import React, { useState, useEffect } from "react";
 import jwt_decode from "jwt-decode";
 import { Box, Typography } from "@material-ui/core";
@@ -27,8 +28,44 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   search: {
-    padding: "10px",
-    fontSize: "14px",
+    position: "relative",
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: theme.palette.grey[200],
+    "&:hover": {
+      backgroundColor: theme.palette.grey[300],
+    },
+    marginRight: theme.spacing(2),
+    marginLeft: 0,
+    width: "100%",
+    [theme.breakpoints.up("sm")]: {
+      marginLeft: theme.spacing(3),
+      width: "auto",
+    },
+  },
+  searchIcon: {
+    padding: theme.spacing(0, 2),
+    height: "100%",
+    position: "absolute",
+    pointerEvents: "none",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  inputRoot: {
+    color: "inherit",
+  },
+  inputInput: {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+    transition: theme.transitions.create("width"),
+    width: "100%",
+    [theme.breakpoints.up("md")]: {
+      width: "20ch",
+    },
+  },
+  loginReg: {
+    color: "white",
   },
 }));
 
@@ -39,23 +76,18 @@ const Navbar = () => {
   const [name, setName] = useState("");
   const [token, setToken] = useState("");
   const [expire, setExpire] = useState("");
-  const [open, setOpen] = useState(false);
+  const [search, setSearch] = useState("");
+  const [lang, setLang] = useState("");
+  const [theme, setTheme] = useState("light");
 
   const Logout = async () => {
     try {
       await axios.delete(`${API_URL}logout`);
       navigate("/");
+      refreshToken();
     } catch (error) {
       console.log(error);
     }
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleClick = () => {
-    setOpen(true);
   };
 
   useEffect(() => {
@@ -84,77 +116,45 @@ const Navbar = () => {
             <HomeIcon />
           </Button>
           <SearchIcon className={classes.search} />
+          <input type="text" placeholder="Search site" value={search} onChange={(e) => setSearch(e.target.value)} className={classes.search} />
           <Box className={classes.title} />
           {token ? (
             <>
-              <Typography variant="h6">{name}</Typography>
+              <Typography variant="h6">Welcome back, {name}</Typography>
               <Button onClick={Logout} color="inherit">
                 <ExitToAppIcon />
               </Button>
             </>
           ) : (
-            <PersonIcon onClick={handleClick} />
+            <>
+              <Button
+                onClick={() => {
+                  navigate("/login");
+                }}>
+                <Typography variant="h6" style={{ color: "white" }}>
+                  Login
+                </Typography>
+              </Button>
+              <Button
+                onClick={() => {
+                  navigate("/register");
+                }}>
+                <Typography variant="h6" style={{ color: "white" }}>
+                  Register
+                </Typography>
+              </Button>
+            </>
           )}
+          <Button onClick={() => setLang(lang === "en" ? "ru" : "en")} color="inherit">
+            {lang === "en" ? "RU" : "EN"}
+          </Button>
+          <Button onClick={() => setTheme(theme === "light" ? "dark" : "light")} color="inherit">
+            {theme === "light" ? "Dark" : "Light"}
+          </Button>
         </Toolbar>
       </AppBar>
-      <Popover
-        open={open}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: "top",
-          horizontal: "right",
-        }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "center",
-        }}>
-        <Box p={2}>
-          <Button
-            onClick={() => {
-              handleClose();
-              navigate("/login");
-            }}>
-            Login
-          </Button>
-          <Button
-            onClick={() => {
-              handleClose();
-              navigate("/register");
-            }}>
-            Register1
-          </Button>
-        </Box>
-      </Popover>
     </div>
   );
 };
 
 export default Navbar;
-
-// const getUsers = async () => {
-//   const response = await axiosJWT.get("http://localhost:5000/users", {
-//     headers: {
-//       Authorization: `Bearer ${token}`,
-//     },
-//   });
-//   setUsers(response.data);
-// };
-
-// const axiosJWT = axios.create();
-// axiosJWT.interceptors.request.use(
-//   async (config) => {
-//     const currentDate = new Date();
-//     if (expire * 1000 < currentDate.getTime()) {
-//       const response = await axios.get("http://localhost:5000/token");
-//       config.headers.Authorization = `Bearer ${response.data.accessToken}`;
-//       setToken(response.data.accessToken);
-//       const decoded = jwt_decode(response.data.accessToken);
-//       setName(decoded.name);
-//       setExpire(decoded.exp);
-//     }
-//     return config;
-//   },
-//   (error) => {
-//     return Promise.reject(error);
-//   }
-// );

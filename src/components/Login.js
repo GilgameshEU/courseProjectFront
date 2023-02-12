@@ -29,6 +29,7 @@ const Login = () => {
   const [msg, setMsg] = useState("");
   const navigate = useNavigate();
   const classes = useStyles();
+
   const Auth = async (e) => {
     e.preventDefault();
     try {
@@ -36,7 +37,7 @@ const Login = () => {
         email: email,
         password: password,
       });
-      navigate("/dashboard");
+      navigate("/");
     } catch (error) {
       if (error.response) {
         setMsg(error.response.data.msg);
