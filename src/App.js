@@ -5,8 +5,13 @@ import Navbar from "./components/Navbar";
 import Register from "./components/Register";
 import Home from "./components/Home";
 
+import React, { useState } from "react";
+export const AuthContext = React.createContext();
+
 function App() {
+  //const [isAuth, setIsAuth] = useState(false);
   return (
+    // <AuthContext.Provider value={{ isAuth, setIsAuth }}>
     <BrowserRouter>
       <Navbar />
       <Routes>
@@ -16,6 +21,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />}></Route>
       </Routes>
     </BrowserRouter>
+    //  </AuthContext.Provider>
   );
 }
 

@@ -11,11 +11,12 @@ import LanguageIcon from "@material-ui/icons/Language";
 import Brightness4Icon from "@material-ui/icons/Brightness4";
 import Brightness7Icon from "@material-ui/icons/Brightness7";
 import InputBase from "@material-ui/core/InputBase";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import jwt_decode from "jwt-decode";
 import { Box, Typography } from "@material-ui/core";
-
 import { API_URL } from "./Login";
+
+import { AuthContext } from "../App";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -83,28 +84,11 @@ const Navbar = () => {
   const Logout = async () => {
     try {
       await axios.delete(`${API_URL}logout`);
+
       navigate("/");
-      refreshToken();
+      //  refreshToken();
     } catch (error) {
       console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    refreshToken();
-  }, []);
-
-  const refreshToken = async () => {
-    try {
-      const response = await axios.get(`${API_URL}token`);
-      setToken(response.data.accessToken);
-      const decoded = jwt_decode(response.data.accessToken);
-      setName(decoded.name);
-      setExpire(decoded.exp);
-    } catch (error) {
-      if (error.response) {
-        navigate("/");
-      }
     }
   };
 
@@ -118,7 +102,7 @@ const Navbar = () => {
           <SearchIcon className={classes.search} />
           <input type="text" placeholder="Search site" value={search} onChange={(e) => setSearch(e.target.value)} className={classes.search} />
           <Box className={classes.title} />
-          {token ? (
+          {!!token ? (
             <>
               <Typography variant="h6">Welcome back, {name}</Typography>
               <Button onClick={Logout} color="inherit">
@@ -158,3 +142,22 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+// useEffect(() => {
+//   refreshToken();
+// }, []);
+
+// const refreshToken = async () => {
+//   try {
+//     const response = await axios.get(`${API_URL}token`);
+//     setToken(response.data.accessToken);
+//     const decoded = jwt_decode(response.data.accessToken);
+//     setName(decoded.name);
+//     setExpire(decoded.exp);
+//   } catch (error) {
+//     if (error.response) {
+//       navigate("/");
+//     }
+//   }
+// };
+// console.log(token);

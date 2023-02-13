@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Paper, TextField, Button } from "@material-ui/core";
+import { AuthContext } from "../App";
 
 // const API_URL = "https://coursebackproject.onrender.com/";
 export const API_URL = `http://localhost:5000/`;
@@ -30,6 +31,8 @@ const Login = () => {
   const navigate = useNavigate();
   const classes = useStyles();
 
+  //const { setIsAuth } = useContext(AuthContext);
+
   const Auth = async (e) => {
     e.preventDefault();
     try {
@@ -37,6 +40,7 @@ const Login = () => {
         email: email,
         password: password,
       });
+      // localStorage.setItem('token',)
       navigate("/");
     } catch (error) {
       if (error.response) {
