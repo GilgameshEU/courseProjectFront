@@ -15,7 +15,7 @@ import React, { useState, useEffect, useContext } from "react";
 import jwt_decode from "jwt-decode";
 import { Box, Typography } from "@material-ui/core";
 import { API_URL } from "./Login";
-
+//import jwt, { refreshToken } from "../actions/jwt";
 import { AuthContext } from "../App";
 
 const useStyles = makeStyles((theme) => ({
@@ -92,6 +92,25 @@ const Navbar = () => {
     }
   };
 
+  useEffect(() => {
+    refreshToken();
+  }, []);
+
+  const refreshToken = async () => {
+    try {
+      const response = await axios.get(`${API_URL}token`);
+      setToken(response.data.accessToken);
+      const decoded = jwt_decode(response.data.accessToken);
+      setName(decoded.name);
+      setExpire(decoded.exp);
+    } catch (error) {
+      if (error.response) {
+        navigate("/");
+      }
+    }
+  };
+  console.log(token);
+
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -142,22 +161,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
-// useEffect(() => {
-//   refreshToken();
-// }, []);
-
-// const refreshToken = async () => {
-//   try {
-//     const response = await axios.get(`${API_URL}token`);
-//     setToken(response.data.accessToken);
-//     const decoded = jwt_decode(response.data.accessToken);
-//     setName(decoded.name);
-//     setExpire(decoded.exp);
-//   } catch (error) {
-//     if (error.response) {
-//       navigate("/");
-//     }
-//   }
-// };
-// console.log(token);

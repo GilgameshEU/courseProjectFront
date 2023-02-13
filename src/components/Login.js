@@ -40,7 +40,7 @@ const Login = () => {
         email: email,
         password: password,
       });
-      // localStorage.setItem('token',)
+      //  localStorage.setItem('token', token)
       navigate("/");
     } catch (error) {
       if (error.response) {

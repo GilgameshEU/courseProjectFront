@@ -9,7 +9,8 @@ import { Box, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@material-ui/core";
 import { API_URL } from "./Login";
-//import { updateStatusAndRole, deleteUser, getUsers } from "../actions/axiosWithAuth";
+
+import { useStyles } from "../styles";
 
 const Dashboard = () => {
   const [name, setName] = useState("");
@@ -43,24 +44,9 @@ const Dashboard = () => {
   const classes = useDataGridStyles();
 
   useEffect(() => {
-    refreshToken();
+    //  refreshToken();
     getUsers();
   }, []);
-
-  const refreshToken = async () => {
-    try {
-      const response = await axios.get(`${API_URL}token`);
-      setToken(response.data.accessToken);
-      const decoded = jwt_decode(response.data.accessToken);
-      setName(decoded.name);
-      setExpire(decoded.exp);
-      setRole(decoded.role);
-    } catch (error) {
-      if (error.response) {
-        navigate("/");
-      }
-    }
-  };
 
   const updateStatusAndRole = async (id, newStatus, newRole) => {
     try {
@@ -88,20 +74,32 @@ const Dashboard = () => {
       console.error(error);
     }
   };
-
   const axiosJWT = axios.create();
 
-  // const getUsers = async () => {
-  //   const response = await axiosJWT.get(`${API_URL}users`, {
-  //     headers: {
-  //       Authorization: `Bearer ${token}`,
-  //     },
-  //   });
-  //   setUsers(response.data);
-  // };
+  axiosJWT.interceptors.request.use(
+    async (config) => {
+      const currentDate = new Date();
+      if (expire * 1000 < currentDate.getTime()) {
+        const response = await axios.get(`${API_URL}token`);
+        config.headers.Authorization = `Bearer ${response.data.accessToken}`;
+        setToken(response.data.accessToken);
+        const decoded = jwt_decode(response.data.accessToken);
+        setName(decoded.name);
+        setExpire(decoded.exp);
+      }
+      return config;
+    },
+    (error) => {
+      return Promise.reject(error);
+    }
+  );
 
   const getUsers = async () => {
-    const response = await axiosJWT.get(`${API_URL}users`);
+    const response = await axiosJWT.get(`${API_URL}users`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     setUsers(response.data);
   };
 
@@ -132,7 +130,7 @@ const Dashboard = () => {
       width: 100,
       renderCell: (params) => {
         return (
-          <Button variant="contained" color="primary" className={useDataGridStyles.button} onClick={() => updateStatusAndRole(params.row.id, params.row.status, params.row.role)}>
+          <Button variant="contained" color="primary" className={classes.button} onClick={() => updateStatusAndRole(params.row.id, params.row.status, params.row.role)}>
             Save
           </Button>
         );
@@ -144,7 +142,7 @@ const Dashboard = () => {
       headerName: "Actions",
       width: 100,
       renderCell: (rowData) => (
-        <Button className={useDataGridStyles.button} onClick={() => deleteUser(rowData.id)}>
+        <Button className={classes.button} onClick={() => deleteUser(rowData.id)}>
           Delete
         </Button>
       ),
