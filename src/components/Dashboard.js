@@ -17,31 +17,8 @@ const Dashboard = () => {
   const [token, setToken] = useState("");
   const [expire, setExpire] = useState("");
   const [users, setUsers] = useState([]);
-  const navigate = useNavigate();
   const theme = useTheme();
-  const [role, setRole] = useState("");
-
-  const [open, setOpen] = useState(false);
-
-  const useDataGridStyles = makeStyles({
-    gridContainer: {
-      height: "400px",
-      width: "100%",
-      [theme.breakpoints.down("sm")]: {
-        height: "300px",
-      },
-    },
-    title: {
-      textAlign: "center",
-      marginTop: theme.spacing(3),
-      marginBottom: theme.spacing(3),
-    },
-    button: {
-      margin: theme.spacing(1),
-    },
-  });
-
-  const classes = useDataGridStyles();
+  const classes = useStyles();
 
   useEffect(() => {
     //  refreshToken();

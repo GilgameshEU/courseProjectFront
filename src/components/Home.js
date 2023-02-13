@@ -3,41 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Paper, TextField, Button } from "@material-ui/core";
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    height: "100vh",
-    backgroundColor: theme.palette.grey[200],
-  },
-  formContainer: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    height: "100%",
-  },
-  formPaper: {
-    padding: theme.spacing(2),
-  },
-  itemContainer: {
-    display: "flex",
-    flexWrap: "wrap",
-    justifyContent: "space-between",
-    marginTop: theme.spacing(2),
-  },
-  item: {
-    width: "30%",
-    padding: theme.spacing(2),
-    textAlign: "center",
-  },
-  itemImage: {
-    width: "100%",
-    height: 200,
-    objectFit: "cover",
-  },
-  itemTitle: {
-    marginTop: theme.spacing(2),
-  },
-}));
+import { useStyles } from "../styles";
 
 const Home = () => {
   const classes = useStyles();

@@ -3,6 +3,8 @@ import { makeStyles } from "@material-ui/core/styles";
 export const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+    height: "30vh",
+    // backgroundColor: theme.palette.grey[200],
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -60,8 +62,43 @@ export const useStyles = makeStyles((theme) => ({
       height: "300px",
     },
   },
-
   button: {
     margin: theme.spacing(1),
+  },
+  form: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  textField: {
+    margin: "10px 0",
+  },
+  formContainer: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100%",
+  },
+  formPaper: {
+    padding: theme.spacing(2),
+  },
+  itemContainer: {
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    marginTop: theme.spacing(2),
+  },
+  item: {
+    width: "30%",
+    padding: theme.spacing(2),
+    textAlign: "center",
+  },
+  itemImage: {
+    width: "100%",
+    height: 200,
+    objectFit: "cover",
+  },
+  itemTitle: {
+    marginTop: theme.spacing(2),
   },
 }));
