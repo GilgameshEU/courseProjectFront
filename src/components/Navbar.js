@@ -1,17 +1,11 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Button from "@material-ui/core/Button";
-import SearchIcon from "@material-ui/icons/Search";
-import HomeIcon from "@material-ui/icons/Home";
-import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import React, { useState, useEffect, useContext } from "react";
 import jwt_decode from "jwt-decode";
-import { Box, Typography } from "@material-ui/core";
 import { API_URL } from "./Login";
-//import jwt, { refreshToken } from "../actions/jwt";
 import { useStyles } from "../styles";
+import { AppBar, Toolbar, Typography, Button, Box } from "@material-ui/core";
+import { ExitToApp as ExitToAppIcon, Home as HomeIcon, Search as SearchIcon, Brightness4 as DarkIcon, Brightness7 as LightIcon } from "@material-ui/icons";
 
 const Navbar = () => {
   const classes = useStyles();
@@ -19,7 +13,6 @@ const Navbar = () => {
   const [name, setName] = useState("");
   const [token, setToken] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  // const [expire, setExpire] = useState("");
   const [search, setSearch] = useState("");
   const [lang, setLang] = useState("");
   const [theme, setTheme] = useState("light");
@@ -45,14 +38,12 @@ const Navbar = () => {
       const decoded = jwt_decode(response.data.accessToken);
       setName(decoded.name);
       setIsAuthenticated(true);
-      // setExpire(decoded.exp);
     } catch (error) {
       if (error.response) {
         navigate("/");
       }
     }
   };
-  console.log(token);
 
   return (
     <div className={classes.root}>
@@ -66,7 +57,19 @@ const Navbar = () => {
           <Box className={classes.title} />
           {isAuthenticated ? (
             <>
-              <Typography variant="h6">Welcome back, {name}</Typography>
+              <Button onClick={() => navigate("/collections")}>
+                <Typography variant="h6" style={{ color: "white" }}>
+                  My Collections
+                </Typography>
+              </Button>
+              <Button onClick={() => navigate("/dashboard")}>
+                <Typography variant="h6" style={{ color: "white" }}>
+                  Dashboard{" "}
+                </Typography>
+              </Button>
+              <Typography variant="h6" style={{ color: "white" }}>
+                Welcome back, {name}
+              </Typography>
               <Button onClick={Logout} color="inherit">
                 <ExitToAppIcon />
               </Button>
