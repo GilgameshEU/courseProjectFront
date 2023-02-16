@@ -20,7 +20,7 @@ const Home = () => {
   useEffect(() => {
     //  refreshToken();
     getCollections();
-  });
+  }, []);
 
   return (
     <div className={classes.root}>
