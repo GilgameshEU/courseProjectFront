@@ -63,6 +63,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   button: {
     margin: theme.spacing(1),
+    color: "inherit",
   },
   form: {
     display: "flex",
@@ -99,5 +100,12 @@ export const useStyles = makeStyles((theme) => ({
   },
   itemTitle: {
     marginTop: theme.spacing(2),
+  },
+  iconButton: {
+    color: "inherit",
+  },
+  typography: {
+    color: "white",
+    variant: "h6",
   },
 }));
