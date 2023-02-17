@@ -1,16 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+//import axios from "axios";
 import jwt_decode from "jwt-decode";
-import { useNavigate } from "react-router-dom";
 import { DataGrid } from "@material-ui/data-grid";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { useTheme } from "@material-ui/core/styles";
 import { Box, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
-import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@material-ui/core";
 import { API_URL } from "./Login";
 
 import { useStyles } from "../styles";
+
+import axios, { currentUser } from "../actions/axiosJWT.js";
 
 const Dashboard = () => {
   const [name, setName] = useState("");
@@ -21,7 +21,6 @@ const Dashboard = () => {
   const classes = useStyles();
 
   useEffect(() => {
-    //  refreshToken();
     getUsers();
   }, []);
 
@@ -51,28 +50,9 @@ const Dashboard = () => {
       console.error(error);
     }
   };
-  const axiosJWT = axios.create();
-
-  axiosJWT.interceptors.request.use(
-    async (config) => {
-      const currentDate = new Date();
-      if (expire * 1000 < currentDate.getTime()) {
-        const response = await axios.get(`${API_URL}token`);
-        config.headers.Authorization = `Bearer ${response.data.accessToken}`;
-        setToken(response.data.accessToken);
-        const decoded = jwt_decode(response.data.accessToken);
-        setName(decoded.name);
-        setExpire(decoded.exp);
-      }
-      return config;
-    },
-    (error) => {
-      return Promise.reject(error);
-    }
-  );
 
   const getUsers = async () => {
-    const response = await axiosJWT.get(`${API_URL}users`, {
+    const response = await axios.get(`${API_URL}users`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -158,3 +138,23 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
+//const axiosJWT = axios.create();
+
+// axiosJWT.interceptors.request.use(
+//   async (config) => {
+//     const currentDate = new Date();
+//     if (expire * 1000 < currentDate.getTime()) {
+//       const response = await axios.get(`${API_URL}token`);
+//       config.headers.Authorization = `Bearer ${response.data.accessToken}`;
+//       setToken(response.data.accessToken);
+//       const decoded = jwt_decode(response.data.accessToken);
+//       setName(decoded.name);
+//       setExpire(decoded.exp);
+//     }
+//     return config;
+//   },
+//   (error) => {
+//     return Promise.reject(error);
+//   }
+// );

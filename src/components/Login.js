@@ -15,11 +15,11 @@ const Login = () => {
   const Auth = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`${API_URL}login`, {
+      const response = await axios.post(`${API_URL}login`, {
         email: email,
         password: password,
       });
-      //  localStorage.setItem('token', token)
+      localStorage.setItem("token", response.data.accessToken);
       navigate("/");
     } catch (error) {
       if (error.response) {
