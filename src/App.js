@@ -4,6 +4,7 @@ import Login from "./components/Login";
 import Navbar from "./components/Navbar";
 import Register from "./components/Register";
 import Home from "./components/Home";
+import MyCollections from "./components/MyCollections";
 
 import React, { useState } from "react";
 export const AuthContext = React.createContext();
@@ -19,6 +20,7 @@ function App() {
         <Route path="/login" element={<Login />}></Route>
         <Route path="/register" element={<Register />}></Route>
         <Route path="/dashboard" element={<Dashboard />}></Route>
+        <Route path="/myCollections" element={<MyCollections />}></Route>
       </Routes>
     </BrowserRouter>
     //  </AuthContext.Provider>

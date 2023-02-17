@@ -108,4 +108,7 @@ export const useStyles = makeStyles((theme) => ({
     color: "white",
     variant: "h6",
   },
+  tableHeader: {
+    fontWeight: "bold !important",
+  },
 }));

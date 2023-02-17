@@ -58,7 +58,7 @@ const Navbar = () => {
           <Box className={classes.title} />
           {isAuthenticated ? (
             <>
-              <Button onClick={() => navigate("/collections")} className={classes.button}>
+              <Button onClick={() => navigate("/myCollections")} className={classes.button}>
                 My Collections
               </Button>
               <Button onClick={() => navigate("/dashboard")} className={classes.button}>
