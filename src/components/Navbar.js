@@ -1,4 +1,4 @@
-import axios from "axios";
+//import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect, useContext } from "react";
 import jwt_decode from "jwt-decode";
@@ -7,6 +7,8 @@ import { useStyles } from "../styles";
 import { AppBar, Toolbar, Typography, Button, Box, IconButton, Tooltip } from "@material-ui/core";
 import { ExitToApp as ExitToAppIcon, Home as HomeIcon, Search as SearchIcon, Brightness4 as DarkIcon, Brightness7 as LightIcon } from "@material-ui/icons";
 import Flag from "react-world-flags";
+
+import axiosJWT, { refreshToken, logout, currentUser } from "../actions/axiosJWT.js";
 
 const Navbar = () => {
   const classes = useStyles();
@@ -18,32 +20,29 @@ const Navbar = () => {
   const [lang, setLang] = useState("");
   const [theme, setTheme] = useState("light");
 
-  const Logout = async () => {
-    try {
-      await axios.delete(`${API_URL}logout`);
-      navigate("/");
-      //  refreshToken();
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   useEffect(() => {
-    refreshToken();
-  }, []);
-
-  const refreshToken = async () => {
-    try {
-      const response = await axios.get(`${API_URL}token`);
-      setToken(response.data.accessToken);
-      const decoded = jwt_decode(response.data.accessToken);
+    const token = localStorage.getItem("token");
+    if (token) {
+      const decoded = jwt_decode(token);
       setName(decoded.name);
       setIsAuthenticated(true);
-    } catch (error) {
-      if (error.response) {
-        navigate("/");
-      }
     }
+  }, []);
+
+  const handleLogout = async () => {
+    await logout();
+    setIsAuthenticated(false);
+    setName("");
+    localStorage.removeItem("token");
+    navigate("/");
+  };
+
+  const handleLogin = async () => {
+    navigate("/login");
+  };
+
+  const handleRegister = async () => {
+    navigate("/register");
   };
 
   return (
@@ -65,24 +64,16 @@ const Navbar = () => {
                 Dashboard
               </Button>
               <Typography className={classes.typography}>Welcome back, {name}</Typography>
-              <Button onClick={Logout} className={classes.button}>
+              <Button onClick={handleLogout} className={classes.button}>
                 <ExitToAppIcon />
               </Button>
             </>
           ) : (
             <>
-              <Button
-                onClick={() => {
-                  navigate("/login");
-                }}
-                className={classes.button}>
+              <Button onClick={handleLogin} className={classes.button}>
                 Login
               </Button>
-              <Button
-                onClick={() => {
-                  navigate("/register");
-                }}
-                className={classes.button}>
+              <Button onClick={handleRegister} className={classes.button}>
                 Register
               </Button>
             </>
@@ -105,3 +96,13 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+// const Logout = async () => {
+//   try {
+//     await axiosJWT.delete(`${API_URL}logout`);
+//     navigate("/");
+//     //  refreshToken();
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };

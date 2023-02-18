@@ -10,8 +10,8 @@ import { API_URL } from "./Login";
 
 import { useStyles } from "../styles";
 
-import axios, { currentUser } from "../actions/axiosJWT.js";
-
+import axiosJWT from "../actions/axiosJWT.js";
+import { currentUser } from "../actions/axiosJWT.js";
 const Dashboard = () => {
   const [name, setName] = useState("");
   const [token, setToken] = useState("");
@@ -26,7 +26,7 @@ const Dashboard = () => {
 
   const updateStatusAndRole = async (id, newStatus, newRole) => {
     try {
-      const response = await axios.put(`${API_URL}users/${id}/updateStatusAndRole`, {
+      const response = await axiosJWT.put(`${API_URL}users/${id}/updateStatusAndRole`, {
         role: newRole,
         status: newStatus,
       });
@@ -40,7 +40,7 @@ const Dashboard = () => {
 
   const deleteUser = async (id) => {
     try {
-      await axios.delete(`${API_URL}users/${id}/delete`, {
+      await axiosJWT.delete(`${API_URL}users/${id}/delete`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -52,7 +52,7 @@ const Dashboard = () => {
   };
 
   const getUsers = async () => {
-    const response = await axios.get(`${API_URL}users`, {
+    const response = await axiosJWT.get(`${API_URL}users`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -116,11 +116,11 @@ const Dashboard = () => {
     role: user.role,
     status: user.status,
   }));
-
+  console.log(currentUser?.name);
   return (
     <Box className={classes.gridContainer}>
       <Typography variant="h3" component="h3" className={classes.title}>
-        Welcome Back: {name}
+        Welcome Back: {axiosJWT.currentUser?.name}
       </Typography>
       <DataGrid
         autoHeight

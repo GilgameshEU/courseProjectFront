@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import axios from "axios";
+//import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Grid, Paper, TextField, Button } from "@material-ui/core";
 import { useStyles } from "../styles";
+import axiosJWT, { refreshToken, logout, currentUser, auth } from "../actions/axiosJWT.js";
+
 export const API_URL = `http://localhost:5000/`; // const API_URL = "https://coursebackproject.onrender.com/";
 
 const Login = () => {
@@ -12,22 +14,17 @@ const Login = () => {
   const navigate = useNavigate();
   const classes = useStyles();
 
-  const Auth = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const response = await axios.post(`${API_URL}login`, {
-        email: email,
-        password: password,
-      });
-      localStorage.setItem("token", response.data.accessToken);
+    const result = await auth(email, password);
+    if (result.success) {
+      const { data } = result;
+      localStorage.setItem("token", data.accessToken);
       navigate("/");
-    } catch (error) {
-      if (error.response) {
-        setMsg(error.response.data.msg);
-      }
+    } else {
+      setMsg(result.data);
     }
   };
-
   return (
     <div className={classes.root}>
       <Grid container className={classes.formContainer}>
@@ -36,7 +33,7 @@ const Login = () => {
             <p>{msg}</p>
             <TextField label="Email or Username" value={email} onChange={(e) => setEmail(e.target.value)} fullWidth margin="normal" />
             <TextField label="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} fullWidth margin="normal" />
-            <Button variant="contained" color="primary" fullWidth onClick={Auth}>
+            <Button variant="contained" color="primary" fullWidth onClick={handleSubmit}>
               Login
             </Button>
           </Paper>
