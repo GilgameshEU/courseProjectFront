@@ -7,18 +7,18 @@ import { useStyles } from "../styles";
 import { AppBar, Toolbar, Typography, Button, Box, IconButton, Tooltip } from "@material-ui/core";
 import { ExitToApp as ExitToAppIcon, Home as HomeIcon, Search as SearchIcon, Brightness4 as DarkIcon, Brightness7 as LightIcon } from "@material-ui/icons";
 import Flag from "react-world-flags";
-
+import { AuthContext } from "./AuthContext";
 import axiosJWT, { refreshToken, logout, currentUser } from "../actions/axiosJWT.js";
 
 const Navbar = () => {
   const classes = useStyles();
   const navigate = useNavigate();
   const [name, setName] = useState("");
-  const [token, setToken] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [search, setSearch] = useState("");
   const [lang, setLang] = useState("");
   const [theme, setTheme] = useState("light");
+  // const [token, setToken] = useState("");
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -32,19 +32,13 @@ const Navbar = () => {
   const handleLogout = async () => {
     await logout();
     setIsAuthenticated(false);
-    setName("");
-    localStorage.removeItem("token");
+    // setName("");
+    // localStorage.removeItem("token");
     navigate("/");
   };
 
-  const handleLogin = async () => {
-    navigate("/login");
-  };
-
-  const handleRegister = async () => {
-    navigate("/register");
-  };
-
+  console.log(isAuthenticated);
+  console.log(localStorage.getItem("token"));
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -70,10 +64,10 @@ const Navbar = () => {
             </>
           ) : (
             <>
-              <Button onClick={handleLogin} className={classes.button}>
+              <Button onClick={() => navigate("/login")} className={classes.button}>
                 Login
               </Button>
-              <Button onClick={handleRegister} className={classes.button}>
+              <Button onClick={() => navigate("/register")} className={classes.button}>
                 Register
               </Button>
             </>

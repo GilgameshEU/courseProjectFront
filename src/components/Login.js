@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 //import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Grid, Paper, TextField, Button } from "@material-ui/core";
 import { useStyles } from "../styles";
 import axiosJWT, { refreshToken, logout, currentUser, auth } from "../actions/axiosJWT.js";
+import { AuthContext } from "./AuthContext";
 
 export const API_URL = `http://localhost:5000/`; // const API_URL = "https://coursebackproject.onrender.com/";
 
@@ -13,17 +14,17 @@ const Login = () => {
   const [msg, setMsg] = useState("");
   const navigate = useNavigate();
   const classes = useStyles();
+  const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const result = await auth(email, password);
     if (result.success) {
-      const { data } = result;
-      localStorage.setItem("token", data.accessToken);
       navigate("/");
     } else {
       setMsg(result.data);
     }
+    console.log("result is " + result.success);
   };
   return (
     <div className={classes.root}>
