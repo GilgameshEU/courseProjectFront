@@ -6,6 +6,7 @@ import axios from "axios";
 import { AuthContext } from "./AuthContext";
 import jwt_decode from "jwt-decode";
 import CollectionForm from "./CollectionForm";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const MyCollections = () => {
   const classes = useStyles();
@@ -44,11 +45,11 @@ const MyCollections = () => {
     try {
       if (editingCollection) {
         // Update existing collection
-        const updatedCollection = await axios.put(`${API_URL}collections/${editingCollection.id}`, collection);
+        const updatedCollection = await axios.put(`${API_URL}collections/${editingCollection.id}/updateCollection`, collection);
         setCollections(collections.map((c) => (c.id === updatedCollection.data.id ? updatedCollection.data : c)));
       } else {
         // Add new collection
-        const newCollection = await axios.post(`${API_URL}collections`, collection);
+        const newCollection = await axios.post(`${API_URL}createCollection`, collection);
         setCollections([...collections, newCollection.data]);
       }
       setEditingCollection(null);
@@ -57,10 +58,19 @@ const MyCollections = () => {
     }
   };
 
+  const handleDeleteCollection = async (collection) => {
+    try {
+      await axios.delete(`${API_URL}collections/${collection.id}/deleteCollection`);
+      setCollections(collections.filter((c) => c.id !== collection.id));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const handleCancelEdit = () => {
     setEditingCollection(null);
   };
-
+  console.log(!!editingCollection);
   return (
     <div className={classes.root}>
       {editingCollection ? (
@@ -76,6 +86,9 @@ const MyCollections = () => {
               <Typography variant="body2">User: {collection.user.name}</Typography>
               <Button variant="contained" color="primary" onClick={() => handleEditCollection(collection)}>
                 Edit
+              </Button>
+              <Button variant="contained" color="error" onClick={() => handleDeleteCollection(collection)} startIcon={<DeleteIcon />}>
+                Delete
               </Button>
             </div>
           ))}
