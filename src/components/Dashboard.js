@@ -116,7 +116,6 @@ const Dashboard = () => {
     role: user.role,
     status: user.status,
   }));
-  console.log(currentUser?.name);
   return (
     <Box className={classes.gridContainer}>
       <Typography variant="h3" component="h3" className={classes.title}>

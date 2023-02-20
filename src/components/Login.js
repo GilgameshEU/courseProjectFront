@@ -5,7 +5,7 @@ import { Grid, Paper, TextField, Button } from "@material-ui/core";
 import { useStyles } from "../styles";
 import axiosJWT, { refreshToken, logout, currentUser, auth } from "../actions/axiosJWT.js";
 import { AuthContext } from "./AuthContext";
-
+import jwt_decode from "jwt-decode";
 export const API_URL = `http://localhost:5000/`; // const API_URL = "https://coursebackproject.onrender.com/";
 
 const Login = () => {
@@ -14,12 +14,19 @@ const Login = () => {
   const [msg, setMsg] = useState("");
   const navigate = useNavigate();
   const classes = useStyles();
-  const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
+  const { setName, setIsAuthenticated, setRole } = useContext(AuthContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const result = await auth(email, password);
     if (result.success) {
+      const token = localStorage.getItem("token");
+      if (token) {
+        const decoded = jwt_decode(token);
+        setRole(decoded.role);
+        setName(decoded.name);
+        setIsAuthenticated(true);
+      }
       navigate("/");
     } else {
       setMsg(result.data);
