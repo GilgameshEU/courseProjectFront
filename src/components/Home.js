@@ -33,6 +33,7 @@ const Home = () => {
               <Typography variant="body2">Theme: {collection.theme}</Typography>
               <Typography variant="body2">Created At: {new Date(collection.createdAt).toLocaleString()}</Typography>
               <Typography variant="body2">User: {collection.user.name}</Typography>
+              <Typography variant="body1" dangerouslySetInnerHTML={{ __html: collection.descriptionHtml }} />
               <div style={{ display: "flex", alignItems: "center" }}>
                 <IconButton>
                   <Favorite />

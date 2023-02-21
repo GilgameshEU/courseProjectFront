@@ -75,31 +75,59 @@ const MyCollections = () => {
 
   return (
     <div className={classes.root}>
-      {editingCollection ? (
-        <CollectionForm onSave={editingCollection.id ? handleSaveExistingCollection : handleSaveNewCollection} onCancel={handleCancelEdit} initialValues={editingCollection} />
-      ) : (
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          {collections.map((collection) => (
-            <div key={collection.id} style={{ marginBottom: "16px" }}>
-              <Typography variant="h6">{collection.id}</Typography>
-              <Typography variant="h6">{collection.name}</Typography>
-              <Typography variant="body1" dangerouslySetInnerHTML={{ __html: collection.descriptionHtml }} />
-              <Typography variant="body2">Theme: {collection.theme}</Typography>
-              <Typography variant="body2">Created At: {new Date(collection.createdAt).toLocaleString()}</Typography>
-              <Typography variant="body2">User: {collection.user.name}</Typography>
-              <Button variant="contained" color="primary" onClick={() => handleEditCollection(collection)}>
-                Edit
-              </Button>
-              <Button variant="contained" color="error" onClick={() => handleDeleteCollection(collection)} startIcon={<DeleteIcon />}>
-                Delete
+      <Typography variant="h4" gutterBottom>
+        My Collections
+      </Typography>
+      <div style={{ display: "flex", flexDirection: "row" }}>
+        <div style={{ flex: "1" }}>
+          <Typography variant="h5">Collection Summary</Typography>
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Theme</th>
+                <th>Created At</th>
+                <th>User</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {collections.map((collection) => (
+                <tr key={collection.id}>
+                  <td>{collection.id}</td>
+                  <td>{collection.name}</td>
+                  <td>{collection.descriptionHtml}</td>
+                  <td>{collection.theme}</td>
+                  <td>{new Date(collection.createdAt).toLocaleString()}</td>
+                  {/* <td>{collection.user.name}</td> */}
+                  <td>
+                    <Button variant="contained" color="primary" onClick={() => handleEditCollection(collection)}>
+                      Edit
+                    </Button>
+                    <Button variant="contained" color="error" onClick={() => handleDeleteCollection(collection)} startIcon={<DeleteIcon />}>
+                      Delete
+                    </Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div style={{ flex: "1" }}>
+          {editingCollection ? (
+            <CollectionForm onSave={editingCollection.id ? handleSaveExistingCollection : handleSaveNewCollection} onCancel={handleCancelEdit} initialValues={editingCollection} />
+          ) : (
+            <div>
+              <Typography variant="h5">Add New Collection</Typography>
+              <Button variant="contained" color="primary" onClick={handleAddNewCollection}>
+                Add New Collection
               </Button>
             </div>
-          ))}
-          <Button variant="contained" color="primary" onClick={handleAddNewCollection}>
-            Add New Collection
-          </Button>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 };
