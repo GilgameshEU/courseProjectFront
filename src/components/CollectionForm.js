@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { TextField, Button } from "@mui/material";
 import { useStyles } from "../styles";
+import { AuthContext } from "./AuthContext";
 
 const CollectionForm = ({ onSave, onCancel, initialValues }) => {
   const classes = useStyles();
@@ -9,9 +10,11 @@ const CollectionForm = ({ onSave, onCancel, initialValues }) => {
   const [theme, setTheme] = useState(initialValues.theme || "");
   const [imageUrl, setImageUrl] = useState(initialValues.imageUrl || "");
 
+  const { userId } = useContext(AuthContext);
+
   const handleSave = (e) => {
     e.preventDefault();
-    onSave({ name, description, theme, imageUrl });
+    onSave({ name, description, theme, imageUrl, userId });
   };
 
   return (

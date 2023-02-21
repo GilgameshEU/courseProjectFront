@@ -9,8 +9,9 @@ export const AuthProvider = (props) => {
   const [theme, setTheme] = useState("light");
   const [name, setName] = useState("");
   const [role, setRole] = useState("");
+  const [userId, setUserId] = useState("");
 
-  return <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated, name, setName, lang, setLang, theme, setTheme, role, setRole }}>{props.children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated, name, setName, lang, setLang, theme, setTheme, role, setRole, userId, setUserId }}>{props.children}</AuthContext.Provider>;
 };
 
 // export const AuthContext = createContext();

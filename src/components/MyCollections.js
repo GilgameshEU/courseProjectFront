@@ -12,7 +12,7 @@ const MyCollections = () => {
   const classes = useStyles();
   const [collections, setCollections] = useState([]);
   const [editingCollection, setEditingCollection] = useState(null);
-  const { isAuthenticated } = useContext(AuthContext);
+  const { isAuthenticated, userId } = useContext(AuthContext);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,24 +34,26 @@ const MyCollections = () => {
   }, [isAuthenticated]);
 
   const handleAddNewCollection = () => {
-    setEditingCollection({ name: "", description: "", theme: "", imageUrl: "" });
+    setEditingCollection({ name: "", description: "", theme: "", imageUrl: "", userId });
   };
 
   const handleEditCollection = (collection) => {
     setEditingCollection(collection);
   };
-
-  const handleSaveCollection = async (collection) => {
+  const handleSaveNewCollection = async (collection) => {
     try {
-      if (editingCollection) {
-        // Update existing collection
-        const updatedCollection = await axios.put(`${API_URL}collections/${editingCollection.id}/updateCollection`, collection);
-        setCollections(collections.map((c) => (c.id === updatedCollection.data.id ? updatedCollection.data : c)));
-      } else {
-        // Add new collection
-        const newCollection = await axios.post(`${API_URL}createCollection`, collection);
-        setCollections([...collections, newCollection.data]);
-      }
+      const newCollection = await axios.post(`${API_URL}createCollection`, collection);
+      setCollections([...collections, newCollection.data]);
+      setEditingCollection(null);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleSaveExistingCollection = async (collection) => {
+    try {
+      const updatedCollection = await axios.put(`${API_URL}collections/${editingCollection.id}/updateCollection`, collection);
+      setCollections(collections.map((c) => (c.id === updatedCollection.data.id ? updatedCollection.data : c)));
       setEditingCollection(null);
     } catch (error) {
       console.error(error);
@@ -70,15 +72,16 @@ const MyCollections = () => {
   const handleCancelEdit = () => {
     setEditingCollection(null);
   };
-  console.log(!!editingCollection);
+
   return (
     <div className={classes.root}>
       {editingCollection ? (
-        <CollectionForm onSave={handleSaveCollection} onCancel={handleCancelEdit} initialValues={editingCollection} />
+        <CollectionForm onSave={editingCollection.id ? handleSaveExistingCollection : handleSaveNewCollection} onCancel={handleCancelEdit} initialValues={editingCollection} />
       ) : (
         <div style={{ display: "flex", flexDirection: "column" }}>
           {collections.map((collection) => (
             <div key={collection.id} style={{ marginBottom: "16px" }}>
+              <Typography variant="h6">{collection.id}</Typography>
               <Typography variant="h6">{collection.name}</Typography>
               <Typography variant="body1" dangerouslySetInnerHTML={{ __html: collection.descriptionHtml }} />
               <Typography variant="body2">Theme: {collection.theme}</Typography>

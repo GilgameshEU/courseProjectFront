@@ -14,7 +14,7 @@ const Login = () => {
   const [msg, setMsg] = useState("");
   const navigate = useNavigate();
   const classes = useStyles();
-  const { setName, setIsAuthenticated, setRole } = useContext(AuthContext);
+  const { setName, setIsAuthenticated, setRole, setUserId } = useContext(AuthContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,6 +25,7 @@ const Login = () => {
         const decoded = jwt_decode(token);
         setRole(decoded.role);
         setName(decoded.name);
+        setUserId(decoded.userId);
         setIsAuthenticated(true);
       }
       navigate("/");
