@@ -13,7 +13,7 @@ const Navbar = () => {
   const classes = useStyles();
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
-  const { isAuthenticated, setName, setIsAuthenticated, name, lang, setLang, theme, setTheme, role, setRole } = useContext(AuthContext);
+  const { isAuthenticated, setName, setIsAuthenticated, name, lang, setLang, theme, setTheme, role, setRole, setUserId } = useContext(AuthContext);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -21,6 +21,7 @@ const Navbar = () => {
       const decoded = jwt_decode(token);
       setName(decoded.name);
       setRole(decoded.role);
+      setUserId(decoded.userId);
       setIsAuthenticated(true);
     }
   }, []);

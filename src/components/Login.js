@@ -26,14 +26,15 @@ const Login = () => {
         setRole(decoded.role);
         setName(decoded.name);
         setUserId(decoded.userId);
-        setIsAuthenticated(true);
       }
+      setIsAuthenticated(true);
       navigate("/");
     } else {
       setMsg(result.data);
     }
     console.log("result is " + result.success);
   };
+
   return (
     <div className={classes.root}>
       <Grid container className={classes.formContainer}>

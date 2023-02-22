@@ -4,10 +4,12 @@ import { API_URL } from "./Login";
 import axios from "axios";
 import { Typography, IconButton } from "@mui/material";
 import { Favorite, Share } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const classes = useStyles();
   const [collections, setCollections] = useState([]);
+  const navigate = useNavigate();
 
   const getCollections = async () => {
     try {
@@ -21,6 +23,10 @@ const Home = () => {
   useEffect(() => {
     getCollections();
   }, []);
+
+  const handleCollectionClick = (id) => {
+    navigate(`collections/${id}/items`);
+  };
 
   return (
     <div className={classes.root}>
@@ -41,9 +47,9 @@ const Home = () => {
                 <IconButton>
                   <Share />
                 </IconButton>
-                <a href={`/collections/${collection.id}`} style={{ marginLeft: "auto" }}>
+                <button onClick={() => handleCollectionClick(collection.id)} style={{ marginLeft: "auto" }}>
                   Подробнее
-                </a>
+                </button>
               </div>
             </div>
           </div>

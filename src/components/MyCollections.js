@@ -12,29 +12,26 @@ const MyCollections = () => {
   const classes = useStyles();
   const [collections, setCollections] = useState([]);
   const [editingCollection, setEditingCollection] = useState(null);
-  const { isAuthenticated, userId } = useContext(AuthContext);
+  const { isAuthenticated, userId, name, role } = useContext(AuthContext);
 
   useEffect(() => {
     const fetchData = async () => {
       const result = await axios(`${API_URL}collections`);
-      if (isAuthenticated && localStorage.getItem("token")) {
-        const token = localStorage.getItem("token");
-        const decoded = jwt_decode(token);
-        console.log(decoded.role);
-        if (decoded.role === "admin") {
+      if (isAuthenticated) {
+        if (role === "admin") {
           setCollections(result.data);
         } else {
-          setCollections(result.data.filter((collection) => collection.user.name === decoded.name));
+          setCollections(result.data.filter((collection) => collection.user.name === name));
         }
       } else {
         setCollections([]);
       }
     };
     fetchData();
-  }, [isAuthenticated]);
+  }, [isAuthenticated, name, role]);
 
   const handleAddNewCollection = () => {
-    setEditingCollection({ name: "", description: "", theme: "", imageUrl: "", userId });
+    setEditingCollection({ name: "", description: "", theme: "", imageUrl: "", userId: "" });
   };
 
   const handleEditCollection = (collection) => {
@@ -72,6 +69,7 @@ const MyCollections = () => {
   const handleCancelEdit = () => {
     setEditingCollection(null);
   };
+  console.log(userId);
 
   return (
     <div className={classes.root}>
@@ -98,10 +96,14 @@ const MyCollections = () => {
                 <tr key={collection.id}>
                   <td>{collection.id}</td>
                   <td>{collection.name}</td>
-                  <td>{collection.descriptionHtml}</td>
+                  {/* <td>
+                    <div dangerouslySetInnerHTML={{ __html: collection.descriptionHtml }} />
+                  </td> */}
+                  <td>{collection.description}</td>
                   <td>{collection.theme}</td>
                   <td>{new Date(collection.createdAt).toLocaleString()}</td>
-                  {/* <td>{collection.user.name}</td> */}
+                  <td>{collection.user?.name}</td>
+
                   <td>
                     <Button variant="contained" color="primary" onClick={() => handleEditCollection(collection)}>
                       Edit
@@ -133,3 +135,6 @@ const MyCollections = () => {
 };
 
 export default MyCollections;
+
+// const token = localStorage.getItem("token");
+// const decoded = jwt_decode(token);

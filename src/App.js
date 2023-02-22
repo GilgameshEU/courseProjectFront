@@ -5,6 +5,7 @@ import Navbar from "./components/Navbar";
 import Register from "./components/Register";
 import Home from "./components/Home";
 import MyCollections from "./components/MyCollections";
+import Items from "./components/Items";
 
 import { AuthProvider } from "./components/AuthContext";
 
@@ -23,6 +24,7 @@ function App() {
           <Route path="/register" element={<Register />}></Route>
           <Route path="/dashboard" element={<Dashboard />}></Route>
           <Route path="/myCollections" element={<MyCollections />}></Route>
+          {/* <Route path="/collections/:id/items" element={<Items />}></Route> */}
         </Routes>
       </BrowserRouter>
     </AuthProvider>
