@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 //import axios from "axios";
 import jwt_decode from "jwt-decode";
-import { DataGrid } from "@material-ui/data-grid";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { useTheme } from "@material-ui/core/styles";
 import { Box, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
@@ -131,6 +131,10 @@ const Dashboard = () => {
           top: params.isFirst ? theme.spacing(2) : 0,
           bottom: params.isLast ? theme.spacing(2) : 0,
         })}
+        components={{
+          Toolbar: GridToolbar,
+        }}
+        disableSelectionOnClick
       />
     </Box>
   );

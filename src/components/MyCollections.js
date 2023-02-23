@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Typography, Button } from "@mui/material";
+import { Typography, Button, Grid } from "@mui/material";
 import { useStyles } from "../styles";
 import { API_URL } from "./Login";
 import axios from "axios";
@@ -7,6 +7,7 @@ import { AuthContext } from "./AuthContext";
 import jwt_decode from "jwt-decode";
 import CollectionForm from "./CollectionForm";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 
 const MyCollections = () => {
   const classes = useStyles();
@@ -28,7 +29,7 @@ const MyCollections = () => {
       }
     };
     fetchData();
-  }, [isAuthenticated, name, role]);
+  }, [isAuthenticated, name, role, editingCollection]);
 
   const handleAddNewCollection = () => {
     setEditingCollection({ name: "", description: "", theme: "", imageUrl: "", userId: "" });
@@ -69,67 +70,62 @@ const MyCollections = () => {
   const handleCancelEdit = () => {
     setEditingCollection(null);
   };
-  console.log(userId);
+
+  const columns = [
+    { field: "id", headerName: "ID", width: 100 },
+    { field: "name", headerName: "Name", width: 200 },
+    { field: "description", headerName: "Description", width: 400 },
+    { field: "theme", headerName: "Theme", width: 150 },
+    { field: "createdAt", headerName: "Created At", width: 200, valueGetter: (params) => new Date(params.row.createdAt).toLocaleString() },
+    { field: "user.name", headerName: "User", width: 150, valueGetter: (params) => params.row.user?.name },
+    {
+      field: "actions",
+      headerName: "Actions",
+      width: 200,
+      renderCell: (params) => (
+        <>
+          <Button variant="contained" color="primary" onClick={() => handleEditCollection(params.row)}>
+            Edit
+          </Button>
+          <Button variant="contained" color="error" onClick={() => handleDeleteCollection(params.row)} startIcon={<DeleteIcon />}>
+            Delete
+          </Button>
+        </>
+      ),
+    },
+  ];
 
   return (
     <div className={classes.root}>
       <Typography variant="h4" gutterBottom>
         My Collections
       </Typography>
-      <div style={{ display: "flex", flexDirection: "row" }}>
-        <div style={{ flex: "1" }}>
-          <Typography variant="h5">Collection Summary</Typography>
-          <table>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Theme</th>
-                <th>Created At</th>
-                <th>User</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {collections.map((collection) => (
-                <tr key={collection.id}>
-                  <td>{collection.id}</td>
-                  <td>{collection.name}</td>
-                  {/* <td>
-                    <div dangerouslySetInnerHTML={{ __html: collection.descriptionHtml }} />
-                  </td> */}
-                  <td>{collection.description}</td>
-                  <td>{collection.theme}</td>
-                  <td>{new Date(collection.createdAt).toLocaleString()}</td>
-                  <td>{collection.user?.name}</td>
-
-                  <td>
-                    <Button variant="contained" color="primary" onClick={() => handleEditCollection(collection)}>
-                      Edit
-                    </Button>
-                    <Button variant="contained" color="error" onClick={() => handleDeleteCollection(collection)} startIcon={<DeleteIcon />}>
-                      Delete
-                    </Button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <div style={{ flex: "1" }}>
-          {editingCollection ? (
-            <CollectionForm onSave={editingCollection.id ? handleSaveExistingCollection : handleSaveNewCollection} onCancel={handleCancelEdit} initialValues={editingCollection} />
-          ) : (
-            <div>
-              <Typography variant="h5">Add New Collection</Typography>
-              <Button variant="contained" color="primary" onClick={handleAddNewCollection}>
-                Add New Collection
-              </Button>
-            </div>
-          )}
-        </div>
-      </div>
+      <Grid item xs={12}>
+        {editingCollection ? (
+          <CollectionForm onSave={editingCollection.id ? handleSaveExistingCollection : handleSaveNewCollection} onCancel={handleCancelEdit} initialValues={editingCollection} />
+        ) : (
+          <div>
+            <Typography variant="h5">Add New Collection</Typography>
+            <Button variant="contained" color="primary" onClick={handleAddNewCollection}>
+              Add New Collection
+            </Button>
+          </div>
+        )}
+      </Grid>
+      <Grid container spacing={3}>
+        <Grid item xs={12}>
+          <div style={{ height: 400, width: "100%" }}>
+            <DataGrid
+              rows={collections}
+              columns={columns}
+              components={{
+                Toolbar: GridToolbar,
+              }}
+              disableSelectionOnClick
+            />
+          </div>
+        </Grid>
+      </Grid>
     </div>
   );
 };
