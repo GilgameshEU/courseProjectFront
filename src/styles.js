@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 export const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    height: "30vh",
+    height: "20vh",
     // backgroundColor: theme.palette.grey[200],
   },
   menuButton: {
@@ -110,5 +110,29 @@ export const useStyles = makeStyles((theme) => ({
   },
   tableHeader: {
     fontWeight: "bold !important",
+  },
+  tagCloud: {
+    height: 100, // or whatever height you want
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  tag: {
+    cursor: "pointer",
+    "&:hover": {
+      opacity: 0.8,
+    },
+  },
+  leftColumn: {
+    flex: "1 0 20%",
+    marginRight: theme.spacing(1),
+  },
+  middleColumn: {
+    flex: "1 0 50%",
+    marginRight: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+  },
+  rightColumn: {
+    flex: "1 0 25%",
   },
 }));
