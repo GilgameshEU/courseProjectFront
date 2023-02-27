@@ -24,6 +24,7 @@ function App() {
           <Route path="/register" element={<Register />}></Route>
           <Route path="/dashboard" element={<Dashboard />}></Route>
           <Route path="/myCollections" element={<MyCollections />}></Route>
+          <Route path="/items" element={<Items />}></Route>
           {/* <Route path="/collections/:id/items" element={<Items />}></Route> */}
         </Routes>
       </BrowserRouter>

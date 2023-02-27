@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 export const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    height: "20vh",
+    height: "15vh",
     // backgroundColor: theme.palette.grey[200],
   },
   menuButton: {
@@ -115,7 +115,6 @@ export const useStyles = makeStyles((theme) => ({
     height: 100, // or whatever height you want
     display: "flex",
     alignItems: "center",
-    justifyContent: "center",
   },
   tag: {
     cursor: "pointer",
@@ -134,5 +133,15 @@ export const useStyles = makeStyles((theme) => ({
   },
   rightColumn: {
     flex: "1 0 25%",
+  },
+  linkRow: {
+    cursor: "pointer",
+    "&:hover .MuiDataGrid-cell": {
+      backgroundColor: "rgba(0, 0, 0, 0.04)",
+    },
+  },
+  linkCell: {
+    textDecoration: "none",
+    color: theme.palette.primary.main,
   },
 }));

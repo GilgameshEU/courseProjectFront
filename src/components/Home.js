@@ -5,6 +5,7 @@ import axios from "axios";
 import { Typography } from "@mui/material";
 import { Paper } from "@material-ui/core";
 import TagCloud from "react-tag-cloud";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   const classes = useStyles();
@@ -67,14 +68,16 @@ const Home = () => {
               <Typography variant="h8" style={{ marginBottom: "16px" }}>
                 Tags
               </Typography>
-              <TagCloud className={classes.tagCloud} minsize={30} maxsize={35}>
-                {tags.map((tag) => (
-                  <div key={tag} className={classes.tag}>
-                    {/* <div key={tag} className={classes.tag} style={{ fontSize: `${20 + tag.count * 10}px` }}>  */}
-                    {tag.trim()}
-                  </div>
-                ))}
-              </TagCloud>
+              <div style={{ maxHeight: "300px", overflow: "auto" }}>
+                <TagCloud className={classes.tagCloud} minsize={30} maxsize={35}>
+                  {tags.map((tag) => (
+                    <div key={tag} className={classes.tag}>
+                      {/* <div key={tag} className={classes.tag} style={{ fontSize: `${20 + tag.count * 10}px` }}>  */}
+                      <Link to={`/items?tags=${tag.trim()}`}>{tag.trim()}</Link>
+                    </div>
+                  ))}
+                </TagCloud>
+              </div>
             </>
           )}
         </div>
@@ -90,7 +93,9 @@ const Home = () => {
                 .map((collection) => (
                   <div key={collection.id} style={{ marginBottom: "16px" }}>
                     <Typography variant="body2">{collection.name}</Typography>
-                    <Typography variant="body2">Items: {collection.item_count}</Typography>
+                    <img src={collection.image} alt="collection" style={{ marginRight: "16px", width: "80px", height: "80px", objectFit: "cover" }} />
+                    <Typography variant="body2">{collection.user.name}</Typography>
+                    <Typography variant="body2">Items: {collection.itemCount}</Typography>
                   </div>
                 ))}
             </>

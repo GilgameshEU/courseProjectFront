@@ -1,9 +1,16 @@
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 import { API_URL } from "../components/Login";
+import AWS from "aws-sdk";
 
 const axiosJWT = axios.create();
 export let currentUser = null;
+
+export const s3 = new AWS.S3({
+  accessKeyId: "AKIA33ZKOPBDVNTUM4VZ",
+  secretAccessKey: "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",
+  region: "eu-central-1",
+});
 
 axiosJWT.interceptors.request.use(async (config) => {
   const token = localStorage.getItem("token");

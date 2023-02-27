@@ -4,7 +4,6 @@ import { useStyles } from "../styles";
 import { API_URL } from "./Login";
 import axios from "axios";
 import { AuthContext } from "./AuthContext";
-import jwt_decode from "jwt-decode";
 import CollectionForm from "./CollectionForm";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
@@ -13,7 +12,7 @@ const MyCollections = () => {
   const classes = useStyles();
   const [collections, setCollections] = useState([]);
   const [editingCollection, setEditingCollection] = useState(null);
-  const { isAuthenticated, userId, name, role } = useContext(AuthContext);
+  const { isAuthenticated, name, role } = useContext(AuthContext);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,7 +31,7 @@ const MyCollections = () => {
   }, [isAuthenticated, name, role, editingCollection]);
 
   const handleAddNewCollection = () => {
-    setEditingCollection({ name: "", description: "", theme: "", imageUrl: "", userId: "" });
+    setEditingCollection({ name: "", description: "", theme: "", image: "", userId: "" });
   };
 
   const handleEditCollection = (collection) => {
@@ -72,12 +71,13 @@ const MyCollections = () => {
   };
 
   const columns = [
-    { field: "id", headerName: "ID", width: 100 },
+    { field: "image", headerName: "Image", width: 100 },
     { field: "name", headerName: "Name", width: 200 },
     { field: "description", headerName: "Description", width: 400 },
     { field: "theme", headerName: "Theme", width: 150 },
     { field: "createdAt", headerName: "Created At", width: 200, valueGetter: (params) => new Date(params.row.createdAt).toLocaleString() },
-    { field: "user.name", headerName: "User", width: 150, valueGetter: (params) => params.row.user?.name },
+    { field: "itemCount", headerName: "Items count", width: 150 },
+    { field: "user.name", headerName: "Owner", width: 150, valueGetter: (params) => params.row.user?.name },
     {
       field: "actions",
       headerName: "Actions",
@@ -131,6 +131,3 @@ const MyCollections = () => {
 };
 
 export default MyCollections;
-
-// const token = localStorage.getItem("token");
-// const decoded = jwt_decode(token);

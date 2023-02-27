@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import React, { useState, useContext, useEffect } from "react";
 import { useStyles } from "../styles";
 import { AppBar, Toolbar, Typography, Button, Box, IconButton, Tooltip } from "@material-ui/core";
-import { ExitToApp as ExitToAppIcon, Home as HomeIcon, Search as SearchIcon, Brightness4 as DarkIcon, Brightness7 as LightIcon } from "@material-ui/icons";
+import { ExitToApp as ExitToAppIcon, Home as HomeIcon, Search as SearchIcon, Brightness4 as DarkIcon, Brightness7 as LightIcon, Language } from "@material-ui/icons";
 import Flag from "react-world-flags";
 import axiosJWT, { refreshToken, logout, currentUser } from "../actions/axiosJWT.js";
 import jwt_decode from "jwt-decode";
@@ -24,6 +24,8 @@ const Navbar = () => {
       setUserId(decoded.userId);
       setIsAuthenticated(true);
     }
+    setLang(localStorage.getItem("lang"));
+    setTheme(localStorage.getItem("theme"));
   }, []);
 
   const handleLogout = async () => {
@@ -77,13 +79,13 @@ const Navbar = () => {
               </>
             )}
             <Tooltip title={lang === "en" ? "Switch to Russian" : "Переключить на английский"}>
-              <IconButton onClick={() => setLang(lang === "en" ? "ru" : "en")} className={classes.iconButton}>
+              <IconButton onClick={() => setLang(lang === "en" ? "ru" : "en")} className={classes.iconButton} value={lang}>
                 {lang === "en" ? <Flag code="GB" height="30" width="30" /> : <Flag code="RU" height="30" width="30" />}
               </IconButton>
             </Tooltip>
 
             <Tooltip title={theme === "light" ? "Switch to Dark Mode" : "Switch to Light Mode"}>
-              <IconButton onClick={() => setTheme(theme === "light" ? "dark" : "light")} className={classes.iconButton}>
+              <IconButton onClick={() => setTheme(theme === "light" ? "dark" : "light")} className={classes.iconButton} value={theme}>
                 {theme === "light" ? <LightIcon /> : <DarkIcon />}
               </IconButton>
             </Tooltip>
@@ -95,3 +97,8 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+// const handleLangChange = () => {
+//   setLang(lang === "en" ? "ru" : "en");
+//   localStorage.setItem("chosenLocale", lang);
+// };
