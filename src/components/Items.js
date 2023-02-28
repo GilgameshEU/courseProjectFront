@@ -6,7 +6,7 @@ import { Typography, TextField, Grid, Button } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { Autocomplete } from "@mui/material";
 import { AuthContext, AuthProvider } from "./AuthContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 const Items = () => {
   const classes = useStyles();
   const [collections, setCollections] = useState([]);
@@ -16,7 +16,7 @@ const Items = () => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const { isAuthenticated, setName, setIsAuthenticated, name, lang, setLang, theme, setTheme, role, setRole, setUserId } = useContext(AuthContext);
-
+  const navigate = useNavigate();
   const getCollections = async () => {
     try {
       const response = await axios.get(`${API_URL}collections`);
@@ -73,20 +73,7 @@ const Items = () => {
     { field: "collection", headerName: "Collection", width: 200, valueGetter: (params) => params.row.collection.name },
     { field: "tags", headerName: "Tags", width: 200 },
     { field: "createdAt", headerName: "Created At", width: 200, valueGetter: (params) => new Date(params.row.createdAt).toLocaleString() },
-    {
-      field: "itemPageLink",
-      headerName: "Link",
-      width: 200,
-      renderCell: (params) => (
-        <Link to={`/item/${params.row.id}`} onClick={() => (window.location.href = `/item/${params.row.id}`)}>
-          Open
-        </Link>
-      ),
-    },
   ];
-
-  console.log("collect", selectedCollection);
-  console.log("tags", selectedTags);
 
   return (
     <div className={classes.root}>
@@ -117,8 +104,7 @@ const Items = () => {
           }}
           disableSelectionOnClick
           onRowClick={(params) => {
-            const url = `/item/${params.row.id}`;
-            window.open(url, "_blank");
+            navigate(`/itemPage/${params.row.id}`);
           }}
         />
       </div>

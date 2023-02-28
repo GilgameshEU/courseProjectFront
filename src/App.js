@@ -6,6 +6,7 @@ import Register from "./components/Register";
 import Home from "./components/Home";
 import MyCollections from "./components/MyCollections";
 import Items from "./components/Items";
+import ItemPage from "./components/ItemPage";
 
 import { AuthProvider } from "./components/AuthContext";
 
@@ -25,7 +26,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />}></Route>
           <Route path="/myCollections" element={<MyCollections />}></Route>
           <Route path="/items" element={<Items />}></Route>
-          {/* <Route path="/collections/:id/items" element={<Items />}></Route> */}
+          <Route path="/itemPage/:id" element={<ItemPage />}></Route>
         </Routes>
       </BrowserRouter>
     </AuthProvider>
