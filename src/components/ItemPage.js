@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "./AuthContext";
 import { Grid, Typography, TextField, Button, List, ListItem, ListItemText, ListItemAvatar, Avatar, IconButton, ListItemSecondaryAction } from "@mui/material";
@@ -8,6 +8,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import AddCommentIcon from "@mui/icons-material/AddComment";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import { dictionary } from "../locale/dictionary.js";
+
 // // import DeleteIcon from '@mui/icons-material/Delete';
 // import { FavoriteIcon, EditIcon, DeleteIcon } from "@material-ui/icons";
 import { API_URL } from "./Login";
@@ -21,7 +23,8 @@ const ItemPage = () => {
   const [commentCount, setCommentCount] = useState(0);
   const [likes, setLikes] = useState(0);
   const [liked, setLiked] = useState(false);
-  const { userId } = useContext(AuthContext);
+  const { userId, lang, theme } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const getItem = async () => {
     setLoading(true);
@@ -72,17 +75,33 @@ const ItemPage = () => {
   };
   console.log(liked);
   if (loading) {
-    return <Typography>Loading...</Typography>;
+    return <Typography>{dictionary["Loading"][lang]}</Typography>;
   }
-  const handleEdit = async () => {};
-  const handleDelete = async () => {};
+  const handleEdit = async () => {
+    try {
+      const response = await axios.put(`${API_URL}itemPage/${id}`, {
+        /* Обновленные данные для итема */
+      });
+      setItem(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
+  const handleDelete = async () => {
+    try {
+      await axios.delete(`${API_URL}itemPage/${id}`);
+      navigate("/items");
+    } catch (error) {
+      console.error(error);
+    }
+  };
   if (item != null) {
     return (
-      <div style={{ border: "1px solid #ccc", borderRadius: "5px", padding: "10px", marginBottom: "20px", position: "relative" }}>
+      <div style={{ border: "1px solid #ccc", borderRadius: "5px", padding: "10px", marginBottom: "20px", position: "relative", background: theme === "light" ? "#FFFFFF" : "#8a8a8a" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <Typography variant="subtitle2" gutterBottom style={{ fontWeight: "bold" }}>
-            Created: {new Date(item.createdAt).toLocaleDateString()}
+            {dictionary["CreatedAt"][lang]} {new Date(item.createdAt).toLocaleDateString()}
           </Typography>
           <div style={{ position: "absolute", top: "10px", right: "10px" }}>
             <IconButton onClick={handleEdit}>
@@ -96,7 +115,7 @@ const ItemPage = () => {
         <Grid container spacing={2}>
           {/* {/ First column: item image /} */}
           <Grid item xs={12} md={3}>
-            <img src={item.image} alt={item.name} style={{ height: "100%", width: "100%", objectFit: "contain", border: "1px solid black", borderRadius: "5px" }} />
+            <img src={item.image} alt={item.name} style={{ height: "100%", width: "100%", objectFit: "fill", border: "1px solid black", borderRadius: "5px" }} />
           </Grid>
           {/* {/ Second column: item name and description /} */}
           <Grid item xs={12} md={3}>
@@ -127,16 +146,17 @@ const ItemPage = () => {
               </tbody>
             </table>
             <Typography variant="subtitle1" gutterBottom>
-              Collection: {item.collection.name}
+              {dictionary["Collection:"][lang]}
+              {item.collection.name}
             </Typography>
             <Typography variant="subtitle1" gutterBottom>
-              Tags: {item.tags}
+              {dictionary["Tags"][lang]} {item.tags}
             </Typography>
           </Grid>
           {/* {/ Fourth column: comments, likes, edit and delete buttons /} */}
           <Grid item xs={12} md={3}>
             <Typography variant="h6" gutterBottom style={{ fontWeight: "bold" }}>
-              Comments
+              {dictionary["Comments"][lang]}
             </Typography>
             <List style={{ maxHeight: "250px", overflowY: "auto" }}>
               <div style={{ display: "flex", alignItems: "center" }}>
@@ -144,7 +164,7 @@ const ItemPage = () => {
                 {/* <Typography variant="subtitle1" gutterBottom>
               {likes}
             </Typography> */}
-                <TextField id="comment" label="Add a comment" fullWidth multiline rows={4} value={comment} onChange={(e) => setComment(e.target.value)} margin="normal" style={{ marginLeft: "10px" }} />
+                <TextField id="comment" label={dictionary["Add a comment"][lang]} fullWidth multiline rows={4} value={comment} onChange={(e) => setComment(e.target.value)} margin="normal" style={{ marginLeft: "10px" }} />
                 <IconButton onClick={handleComment} style={{ marginLeft: "10px" }}>
                   <AddCommentIcon color="primary" />
                 </IconButton>

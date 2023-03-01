@@ -118,14 +118,11 @@ const Dashboard = () => {
   }));
   return (
     <Box className={classes.gridContainer}>
-      <Typography variant="h3" component="h3" className={classes.title}>
-        Welcome Back: {axiosJWT.currentUser?.name}
-      </Typography>
       <DataGrid
         autoHeight
         columns={columns}
         rows={rows}
-        pageSize={10}
+        pageSize={5}
         rowsPerPageOptions={[5]}
         getRowSpacing={(params) => ({
           top: params.isFirst ? theme.spacing(2) : 0,

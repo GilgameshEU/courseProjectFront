@@ -6,6 +6,8 @@ import { useStyles } from "../styles";
 import axiosJWT, { refreshToken, logout, currentUser, auth } from "../actions/axiosJWT.js";
 import { AuthContext } from "./AuthContext";
 import jwt_decode from "jwt-decode";
+import { dictionary } from "../locale/dictionary.js";
+
 export const API_URL = `http://localhost:5000/`; // const API_URL = "https://coursebackproject.onrender.com/";
 
 const Login = () => {
@@ -14,7 +16,7 @@ const Login = () => {
   const [msg, setMsg] = useState("");
   const navigate = useNavigate();
   const classes = useStyles();
-  const { setName, setIsAuthenticated, setRole, setUserId } = useContext(AuthContext);
+  const { setName, setIsAuthenticated, setRole, setUserId, lang, theme } = useContext(AuthContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -36,15 +38,15 @@ const Login = () => {
   };
 
   return (
-    <div className={classes.root}>
+    <div className={classes.root} style={{ display: "flex", justifyContent: "space-between", background: theme === "light" ? "#FFFFFF" : "#8a8a8a" }}>
       <Grid container className={classes.formContainer}>
         <Grid item xs={6}>
           <Paper className={classes.formPaper}>
             <p>{msg}</p>
-            <TextField label="Email or Username" value={email} onChange={(e) => setEmail(e.target.value)} fullWidth margin="normal" />
-            <TextField label="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} fullWidth margin="normal" />
+            <TextField label={dictionary["Email or Username"][lang]} value={email} onChange={(e) => setEmail(e.target.value)} fullWidth margin="normal" />
+            <TextField label={dictionary["Password"][lang]} type="password" value={password} onChange={(e) => setPassword(e.target.value)} fullWidth margin="normal" />
             <Button variant="contained" color="primary" fullWidth onClick={handleSubmit}>
-              Login
+              {dictionary["Login"][lang]}
             </Button>
           </Paper>
         </Grid>

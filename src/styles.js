@@ -3,8 +3,6 @@ import { makeStyles } from "@material-ui/core/styles";
 export const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    height: "15vh",
-    // backgroundColor: theme.palette.grey[200],
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -112,9 +110,11 @@ export const useStyles = makeStyles((theme) => ({
     fontWeight: "bold !important",
   },
   tagCloud: {
-    height: 100, // or whatever height you want
-    display: "flex",
-    alignItems: "center",
+    width: "100%",
+    height: "200px",
+    padding: "16px",
+    backgroundColor: "#f5f5f5",
+    justifyContent: "center",
   },
   tag: {
     cursor: "pointer",

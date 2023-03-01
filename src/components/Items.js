@@ -6,7 +6,9 @@ import { Typography, TextField, Grid, Button } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { Autocomplete } from "@mui/material";
 import { AuthContext, AuthProvider } from "./AuthContext";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { dictionary } from "../locale/dictionary.js";
+
 const Items = () => {
   const classes = useStyles();
   const [collections, setCollections] = useState([]);
@@ -17,6 +19,12 @@ const Items = () => {
   const [loading, setLoading] = useState(false);
   const { isAuthenticated, setName, setIsAuthenticated, name, lang, setLang, theme, setTheme, role, setRole, setUserId } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [tagValue, setTagValue] = useState("");
+
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const tag = searchParams.get("tag");
+
   const getCollections = async () => {
     try {
       const response = await axios.get(`${API_URL}collections`);
@@ -47,6 +55,10 @@ const Items = () => {
   };
 
   useEffect(() => {
+    setTagValue(tag || "");
+  }, [tag]);
+
+  useEffect(() => {
     getCollections();
   }, []);
 
@@ -68,29 +80,39 @@ const Items = () => {
   };
 
   const columns = [
-    { field: "name", headerName: "Name", width: 250 },
-    { field: "description", headerName: "Description", width: 400 },
-    { field: "collection", headerName: "Collection", width: 200, valueGetter: (params) => params.row.collection.name },
-    { field: "tags", headerName: "Tags", width: 200 },
-    { field: "createdAt", headerName: "Created At", width: 200, valueGetter: (params) => new Date(params.row.createdAt).toLocaleString() },
+    { field: "name", headerName: dictionary["Name"][lang], width: 250 },
+    { field: "description", headerName: dictionary["Description"][lang], width: 400 },
+    { field: "collection", headerName: dictionary["Collection"][lang], width: 200, valueGetter: (params) => params.row.collection.name },
+    { field: "tags", headerName: dictionary["Tags"][lang], width: 200 },
+    { field: "createdAt", headerName: dictionary["CreatedAt"][lang], width: 200, valueGetter: (params) => new Date(params.row.createdAt).toLocaleString() },
   ];
-
+  console.log(tagValue);
   return (
-    <div className={classes.root}>
+    <div className={classes.root} style={{ background: theme === "light" ? "#FFFFFF" : "#8a8a8a" }}>
       <Typography variant="h6" gutterBottom>
-        Items
+        {dictionary["Items"][lang]}
       </Typography>
-
       <Grid container spacing={2} alignItems="center">
         <Grid item xs={12} md={4}>
-          <Autocomplete options={collections} getOptionLabel={(option) => option.name} value={selectedCollection} onChange={handleCollectionChange} renderInput={(params) => <TextField {...params} label="Введите название коллекции" variant="outlined" />} />
+          <Autocomplete options={collections} getOptionLabel={(option) => option.name} value={selectedCollection} onChange={handleCollectionChange} renderInput={(params) => <TextField {...params} label={dictionary["Enter collection"][lang]} variant="outlined" />} />
         </Grid>
         <Grid item xs={12} md={4}>
-          <Autocomplete multiple options={Array.from(new Set(tags))} getOptionLabel={(option) => option} value={selectedTags} onChange={handleTagsChange} renderInput={(params) => <TextField {...params} label="Введите теги" variant="outlined" />} />
+          <Autocomplete
+            multiple
+            options={Array.from(new Set(tags))}
+            getOptionLabel={(option) => option}
+            value={selectedTags}
+            onChange={handleTagsChange}
+            inputValue={tagValue}
+            onInputChange={(event, newInputValue) => {
+              setTagValue(newInputValue);
+            }}
+            renderInput={(params) => <TextField {...params} label={dictionary["Enter tags"][lang]} variant="outlined" />}
+          />
         </Grid>
         <Grid item xs={12} md={4}>
           <Button variant="outlined" onClick={handleClearFilters}>
-            Сбросить фильтры
+            {dictionary["Reset filters"][lang]}
           </Button>
         </Grid>
       </Grid>

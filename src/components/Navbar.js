@@ -8,6 +8,7 @@ import Flag from "react-world-flags";
 import axiosJWT, { refreshToken, logout, currentUser } from "../actions/axiosJWT.js";
 import jwt_decode from "jwt-decode";
 import { AuthContext, AuthProvider } from "./AuthContext";
+import { dictionary } from "../locale/dictionary.js";
 
 const Navbar = () => {
   const classes = useStyles();
@@ -37,7 +38,7 @@ const Navbar = () => {
   const isAdmin = role === "admin";
 
   return (
-    <div className={classes.root}>
+    <div className={classes.root} style={{ display: "flex", justifyContent: "space-between", background: theme === "light" ? "#FFFFFF" : "#8a8a8a" }}>
       <AuthProvider>
         <AppBar position="static">
           <Toolbar>
@@ -45,25 +46,27 @@ const Navbar = () => {
               <HomeIcon />
             </Button>
             <SearchIcon className={classes.search} />
-            <input type="text" placeholder="Search site" value={search} onChange={(e) => setSearch(e.target.value)} className={classes.search} />
+            <input type="text" placeholder={dictionary["Search site"][lang]} value={search} onChange={(e) => setSearch(e.target.value)} className={classes.search} />
             <Box className={classes.title} />
             {isAuthenticated ? (
               <>
                 {isAdmin ? (
                   <Button onClick={() => navigate("/myCollections")} className={classes.button}>
-                    All Collections
+                    {dictionary["All collections"][lang]}
                   </Button>
                 ) : (
                   <Button onClick={() => navigate("/myCollections")} className={classes.button}>
-                    My Collections
+                    {dictionary["My collections"][lang]}
                   </Button>
                 )}
                 {isAdmin && (
                   <Button onClick={() => navigate("/dashboard")} className={classes.button}>
-                    Dashboard
+                    {dictionary["Dashboard"][lang]}
                   </Button>
                 )}
-                <Typography className={classes.typography}>Welcome back, {name}</Typography>
+                <Typography className={classes.typography}>
+                  {dictionary["Welcome back,"][lang]} {name}
+                </Typography>
                 <Button onClick={handleLogout} className={classes.button}>
                   <ExitToAppIcon />
                 </Button>
@@ -71,10 +74,10 @@ const Navbar = () => {
             ) : (
               <>
                 <Button onClick={() => navigate("/login")} className={classes.button}>
-                  Login
+                  {dictionary["Login"][lang]}
                 </Button>
                 <Button onClick={() => navigate("/register")} className={classes.button}>
-                  Register
+                  {dictionary["Register"][lang]}
                 </Button>
               </>
             )}
