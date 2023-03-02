@@ -12,6 +12,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { dictionary } from "../locale/dictionary.js";
 import ItemEdit from "./ItemEdit";
 import { API_URL } from "./Login";
+import io from "socket.io-client";
 
 const ItemPage = () => {
   const { id } = useParams();
@@ -26,6 +27,7 @@ const ItemPage = () => {
   const { userId, lang, theme, isAuthenticated, name, role } = useContext(AuthContext);
   const [isEditing, setIsEditing] = useState(false);
   const navigate = useNavigate();
+  const [socket, setSocket] = useState(null);
 
   const getItem = async () => {
     setLoading(true);
@@ -37,6 +39,15 @@ const ItemPage = () => {
         setOwner(true);
       }
       setComments(itemResponse.data.comments);
+      setCommentCount(itemResponse.data.comments.length);
+      // установка соединения с сервером
+      const socket = io(`${API_URL}`);
+      setSocket(socket);
+      socket.on("newComment", (comment) => {
+        // обновление списка комментариев при получении нового комментария
+        setComments((prevComments) => [...prevComments, comment]);
+        setCommentCount((prevCount) => prevCount + 1);
+      });
     } catch (error) {
       throw error;
     } finally {
@@ -65,6 +76,12 @@ const ItemPage = () => {
       await getLikes(id);
     };
     fetchData();
+    // отключение соединения с сервером при размонтировании компонента
+    return () => {
+      if (socket) {
+        socket.disconnect();
+      }
+    };
   }, [id, commentCount, isEditing]);
 
   const handleLike = async () => {
@@ -88,8 +105,9 @@ const ItemPage = () => {
     try {
       const response = await axios.post(`${API_URL}itemPage/${id}/comment`, { comment_text: comment, userId: userId });
       setComments([...comments, response.data]);
-      setComment("");
       setCommentCount(commentCount + 1);
+      socket.emit("addComment", response.data);
+      setComment("");
     } catch (error) {
       throw error;
     }

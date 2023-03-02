@@ -31,6 +31,7 @@
     "react-scripts": "5.0.1",
     "react-tag-cloud": "^1.3.3",
     "react-world-flags": "^1.5.1",
+    "socket.io-client": "^4.6.1",
     "tagcloud": "^1.1.0-1",
     "web-vitals": "^2.1.4"
   },
