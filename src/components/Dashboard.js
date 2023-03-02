@@ -7,6 +7,7 @@ import Button from "@mui/material/Button";
 import { API_URL } from "./Login";
 import { useStyles } from "../styles";
 import axiosJWT from "../actions/axiosJWT.js";
+import axios from "../actions/axiosJWT.js";
 
 const Dashboard = () => {
   const [token] = useState("");
@@ -46,7 +47,7 @@ const Dashboard = () => {
   };
 
   const getUsers = async () => {
-    const response = await axiosJWT.get(`${API_URL}users`, {
+    const response = await axios.get(`${API_URL}users`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
