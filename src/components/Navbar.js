@@ -55,9 +55,15 @@ const Navbar = () => {
                     {dictionary["All collections"][lang]}
                   </Button>
                 ) : (
-                  <Button onClick={() => navigate("/myCollections")} className={classes.button}>
-                    {dictionary["My collections"][lang]}
-                  </Button>
+                  <>
+                    <Button onClick={() => navigate("/myCollections")} className={classes.button}>
+                      {dictionary["My collections"][lang]}
+                    </Button>
+
+                    <Button onClick={() => navigate("/Items")} className={classes.button}>
+                      {dictionary["Items"][lang]}
+                    </Button>
+                  </>
                 )}
                 {isAdmin && (
                   <Button onClick={() => navigate("/dashboard")} className={classes.button}>

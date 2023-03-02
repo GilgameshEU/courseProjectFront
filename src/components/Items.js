@@ -19,11 +19,11 @@ const Items = () => {
   const [loading, setLoading] = useState(false);
   const { isAuthenticated, setName, setIsAuthenticated, name, lang, setLang, theme, setTheme, role, setRole, setUserId } = useContext(AuthContext);
   const navigate = useNavigate();
-  const [tagValue, setTagValue] = useState("");
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  const tag = searchParams.get("tag");
+  const tagFromUrl = searchParams.get("tag");
+  const [tagValue, setTagValue] = useState(tagFromUrl || "");
 
   const getCollections = async () => {
     try {
@@ -54,9 +54,15 @@ const Items = () => {
     }
   };
 
+  // useEffect(() => {
+  //   setTagValue(tag || "");
+  // }, [tag]);
+
   useEffect(() => {
-    setTagValue(tag || "");
-  }, [tag]);
+    if (tagFromUrl) {
+      setTagValue(tagFromUrl);
+    }
+  }, [tagFromUrl]);
 
   useEffect(() => {
     getCollections();
@@ -86,7 +92,7 @@ const Items = () => {
     { field: "tags", headerName: dictionary["Tags"][lang], width: 200 },
     { field: "createdAt", headerName: dictionary["CreatedAt"][lang], width: 200, valueGetter: (params) => new Date(params.row.createdAt).toLocaleString() },
   ];
-  console.log(tagValue);
+
   return (
     <div className={classes.root} style={{ background: theme === "light" ? "#FFFFFF" : "#8a8a8a" }}>
       <Typography variant="h6" gutterBottom>
@@ -104,8 +110,10 @@ const Items = () => {
             value={selectedTags}
             onChange={handleTagsChange}
             inputValue={tagValue}
-            onInputChange={(event, newInputValue) => {
-              setTagValue(newInputValue);
+            onInputChange={(event, newInputValue, reason) => {
+              if (reason === "input") {
+                setTagValue(newInputValue);
+              }
             }}
             renderInput={(params) => <TextField {...params} label={dictionary["Enter tags"][lang]} variant="outlined" />}
           />
@@ -116,7 +124,7 @@ const Items = () => {
           </Button>
         </Grid>
       </Grid>
-      <div style={{ height: 500, width: "100%" }}>
+      <div style={{ height: "80vh", width: "100%" }}>
         <DataGrid
           rows={items}
           columns={columns}

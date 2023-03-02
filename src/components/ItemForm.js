@@ -3,37 +3,52 @@ import { TextField, Button } from "@mui/material";
 import { useStyles } from "../styles";
 import { AuthContext } from "./AuthContext";
 import { s3 } from "../actions/axiosJWT.js";
-import axios from "axios";
 import { API_URL } from "./Login";
+import axios from "axios";
 import { dictionary } from "../locale/dictionary.js";
 
-const CollectionForm = ({ onSave, onCancel, initialValues }) => {
+const ItemForm = ({ onSave, onCancel, initialValues }) => {
   const classes = useStyles();
-  const [name, setName] = useState(initialValues.name || "");
+  const [itemName, setItemName] = useState(initialValues.itemName || "");
   const [description, setDescription] = useState(initialValues.description || "");
-  const [theme, setTheme] = useState(initialValues.themeId || 1);
+  const [collection, setCollection] = useState(initialValues.collectionId || 1);
   const [image, setImage] = useState(initialValues.image || "");
+  const [tags, setTags] = useState(initialValues.tags || "");
   const [dragging, setDragging] = useState(false);
-  const { userId, lang } = useContext(AuthContext);
-  const [themes, setThemes] = useState([]);
+  const { userId, lang, isAuthenticated, role, name } = useContext(AuthContext);
+  const [collections, setCollections] = useState([]);
 
   const handleSave = (e) => {
     e.preventDefault();
-    onSave({ name, description, themeId: theme, image, userId });
+    onSave({ name: itemName, description, image, collectionId: collection, tags });
   };
 
-  const getThemes = async () => {
+  const getCollections = async () => {
     try {
-      const response = await axios.get(`${API_URL}themes`);
-      setThemes(response.data);
+      const response = await axios.get(`${API_URL}collections`);
+      if (isAuthenticated) {
+        if (role === "admin") {
+          setCollections(response.data);
+        } else {
+          setCollections(response.data.filter((collection) => collection.user.name === name));
+        }
+      } else {
+        setCollections([]);
+      }
     } catch (error) {
       throw error;
     }
   };
 
   useEffect(() => {
-    getThemes();
+    getCollections();
   }, []);
+
+  useEffect(() => {
+    if (collections.length > 0) {
+      setCollection(initialValues.collectionId || collections[0].id);
+    }
+  }, [collections]);
 
   const handleDragOver = (e) => {
     e.preventDefault();
@@ -66,21 +81,20 @@ const CollectionForm = ({ onSave, onCancel, initialValues }) => {
     });
   };
 
-  const handleThemeChange = (event) => {
-    setTheme(event.target.value);
+  const handleCollectionsChange = (event) => {
+    setCollection(event.target.value);
   };
 
   return (
     <form onSubmit={handleSave}>
-      <TextField label={dictionary["Name"][lang]} required fullWidth margin="normal" value={name} onChange={(e) => setName(e.target.value)} />
+      <TextField label={dictionary["Name"][lang]} required fullWidth margin="normal" value={itemName} onChange={(e) => setItemName(e.target.value)} />
       <TextField label={dictionary["Description"][lang]} fullWidth multiline rows={4} margin="normal" value={description} onChange={(e) => setDescription(e.target.value)} />
-
       <div>
-        <label htmlFor="theme-select">{dictionary["Theme"][lang]}</label>
-        <select id="theme-select" value={theme} onChange={handleThemeChange}>
-          {themes.map((theme) => (
-            <option key={theme.id} value={theme.id}>
-              {theme.name}
+        <label htmlFor="collection-select">{dictionary["Collections"][lang]}</label>
+        <select id="collection-select" value={collection} onChange={handleCollectionsChange}>
+          {collections.map((collection) => (
+            <option key={collection.id} value={collection.id}>
+              {collection.name}
             </option>
           ))}
         </select>
@@ -89,6 +103,7 @@ const CollectionForm = ({ onSave, onCancel, initialValues }) => {
         <div className={dragging ? classes.formDragAndDropDragging : classes.formDragAndDropArea}>{dictionary["DragDrop"][lang]}</div>
       </div>
       <TextField label={dictionary["Image URL"][lang]} fullWidth margin="normal" value={image} onChange={(e) => setImage(e.target.value)} />
+      <TextField label={dictionary["Tags"][lang]} fullWidth margin="normal" value={tags} onChange={(e) => setTags(e.target.value)} />
       <div className={classes.formButtons}>
         <Button type="submit" variant="contained" color="primary">
           {dictionary["Save"][lang]}
@@ -101,4 +116,4 @@ const CollectionForm = ({ onSave, onCancel, initialValues }) => {
   );
 };
 
-export default CollectionForm;
+export default ItemForm;

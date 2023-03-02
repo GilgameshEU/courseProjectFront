@@ -122,7 +122,7 @@ const Dashboard = () => {
         autoHeight
         columns={columns}
         rows={rows}
-        pageSize={5}
+        pageSize={10}
         rowsPerPageOptions={[5]}
         getRowSpacing={(params) => ({
           top: params.isFirst ? theme.spacing(2) : 0,
@@ -138,23 +138,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-
-//const axiosJWT = axios.create();
-
-// axiosJWT.interceptors.request.use(
-//   async (config) => {
-//     const currentDate = new Date();
-//     if (expire * 1000 < currentDate.getTime()) {
-//       const response = await axios.get(`${API_URL}token`);
-//       config.headers.Authorization = `Bearer ${response.data.accessToken}`;
-//       setToken(response.data.accessToken);
-//       const decoded = jwt_decode(response.data.accessToken);
-//       setName(decoded.name);
-//       setExpire(decoded.exp);
-//     }
-//     return config;
-//   },
-//   (error) => {
-//     return Promise.reject(error);
-//   }
-// );

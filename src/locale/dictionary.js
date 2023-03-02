@@ -1,7 +1,7 @@
 export const dictionary = {
-  "Email or Username": {
-    en: "Email or Username",
-    ru: "Имейл или пароль",
+  Email: {
+    en: "Email",
+    ru: "Электронная почта",
   },
   Password: {
     en: "Password",
@@ -111,10 +111,6 @@ export const dictionary = {
     en: "Name",
     ru: "Имя",
   },
-  Email: {
-    en: "Email",
-    ru: "Электронная почта",
-  },
   "Search site": {
     en: "Search site",
     ru: "Поиск по сайту",
@@ -178,5 +174,17 @@ export const dictionary = {
   "Open collection": {
     en: "Open collection",
     ru: "Открыть коллекцию",
+  },
+  by: {
+    en: "by ",
+    ru: "пользователем ",
+  },
+  "Add New Item": {
+    en: "Add New Item",
+    ru: "Добавить новый предмет ",
+  },
+  Collections: {
+    en: "Collections",
+    ru: "Коллекции",
   },
 };

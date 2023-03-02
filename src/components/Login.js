@@ -8,7 +8,8 @@ import { AuthContext } from "./AuthContext";
 import jwt_decode from "jwt-decode";
 import { dictionary } from "../locale/dictionary.js";
 
-export const API_URL = `http://localhost:5000/`; // const API_URL = "https://coursebackproject.onrender.com/";
+//export const API_URL = `http://localhost:5000/`;
+export const API_URL = "https://coursebackproject.onrender.com/";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -43,7 +44,7 @@ const Login = () => {
         <Grid item xs={6}>
           <Paper className={classes.formPaper}>
             <p>{msg}</p>
-            <TextField label={dictionary["Email or Username"][lang]} value={email} onChange={(e) => setEmail(e.target.value)} fullWidth margin="normal" />
+            <TextField label={dictionary["Email"][lang]} value={email} onChange={(e) => setEmail(e.target.value)} fullWidth margin="normal" />
             <TextField label={dictionary["Password"][lang]} type="password" value={password} onChange={(e) => setPassword(e.target.value)} fullWidth margin="normal" />
             <Button variant="contained" color="primary" fullWidth onClick={handleSubmit}>
               {dictionary["Login"][lang]}

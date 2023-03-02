@@ -9,11 +9,14 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { Link, useNavigate } from "react-router-dom";
 import { dictionary } from "../locale/dictionary.js";
+import ItemForm from "./ItemForm";
 
 const MyCollections = () => {
   const classes = useStyles();
   const [collections, setCollections] = useState([]);
+  const [items, setItems] = useState([]);
   const [editingCollection, setEditingCollection] = useState(null);
+  const [editingItem, setEditingItem] = useState(null);
   const { isAuthenticated, name, role, theme, lang } = useContext(AuthContext);
   const navigate = useNavigate();
   useEffect(() => {
@@ -30,10 +33,14 @@ const MyCollections = () => {
       }
     };
     fetchData();
-  }, [isAuthenticated, name, role, editingCollection]);
+  }, [isAuthenticated, name, role, editingCollection, editingItem]);
 
   const handleAddNewCollection = () => {
     setEditingCollection({ name: "", description: "", themeId: "", image: "", userId: "" });
+  };
+
+  const handleAddNewItem = () => {
+    setEditingItem({ itemName: "", description: "", image: "", userId: "", tags: "", collectionId: "" });
   };
 
   const handleEditCollection = (collection) => {
@@ -48,6 +55,28 @@ const MyCollections = () => {
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const handleSaveNewItem = async (item) => {
+    try {
+      console.log(item);
+      const newItem = await axios.post(`${API_URL}createItem`, {
+        name: item.name,
+        description: item.description,
+        image: item.image,
+        userId: item.userId,
+        tags: item.tags,
+        collectionId: item.collectionId,
+      });
+      setItems([...items, newItem.data]);
+      setEditingItem(null);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleCancelItemEdit = () => {
+    setEditingItem(null);
   };
 
   const handleSaveExistingCollection = async (collection) => {
@@ -75,7 +104,7 @@ const MyCollections = () => {
 
   const columns = [
     { field: "name", headerName: dictionary["Name"][lang], width: 200 },
-    { field: "description", headerName: dictionary["Description"][lang], width: 400 },
+    { field: "description", headerName: dictionary["Description"][lang], width: 200 },
     { field: "theme.name", headerName: dictionary["Theme"][lang], width: 150, valueGetter: (params) => params.row.theme?.name },
     { field: "createdAt", headerName: dictionary["CreatedAt"][lang], width: 200, valueGetter: (params) => new Date(params.row.createdAt).toLocaleString() },
     { field: "itemCount", headerName: dictionary["Items count"][lang], width: 150 },
@@ -104,23 +133,33 @@ const MyCollections = () => {
       ),
     },
   ];
-  console.log(collections);
+
   return (
     <div className={classes.root} style={{ background: theme === "light" ? "#FFFFFF" : "#8a8a8a" }}>
       <Grid item xs={12}>
         {editingCollection ? (
           <CollectionForm onSave={editingCollection.id ? handleSaveExistingCollection : handleSaveNewCollection} onCancel={handleCancelEdit} initialValues={editingCollection} />
+        ) : editingItem ? (
+          <ItemForm onSave={handleSaveNewItem} onCancel={handleCancelItemEdit} initialValues={editingItem} />
         ) : (
           <div>
-            <Button variant="contained" color="primary" onClick={handleAddNewCollection}>
-              {dictionary["Add New Collection"][lang]}
-            </Button>
+            {isAuthenticated && (
+              <>
+                <Button variant="contained" color="primary" onClick={handleAddNewCollection}>
+                  {dictionary["Add New Collection"][lang]}
+                </Button>
+                <Button variant="contained" color="primary" onClick={handleAddNewItem}>
+                  {dictionary["Add New Item"][lang]}
+                </Button>
+              </>
+            )}
           </div>
         )}
       </Grid>
+
       <Grid container spacing={3}>
         <Grid item xs={12}>
-          <div style={{ height: 500, width: "100%" }}>
+          <div style={{ height: "80vh", width: "100%" }}>
             <DataGrid
               rows={collections}
               columns={columns}
@@ -128,9 +167,6 @@ const MyCollections = () => {
                 Toolbar: GridToolbar,
               }}
               disableSelectionOnClick
-              // onRowClick={(params) => {
-              //   navigate(`/items?${params.row.id}`);
-              // }}
             />
           </div>
         </Grid>
