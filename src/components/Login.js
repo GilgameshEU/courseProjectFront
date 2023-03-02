@@ -7,8 +7,8 @@ import { AuthContext } from "./AuthContext";
 import jwt_decode from "jwt-decode";
 import { dictionary } from "../locale/dictionary.js";
 
-export const API_URL = `http://localhost:5000/`;
-//export const API_URL = "https://coursebackproject.onrender.com/";
+//export const API_URL = `http://localhost:5000/`;
+export const API_URL = "https://coursebackproject.onrender.com/";
 
 const Login = () => {
   const [email, setEmail] = useState("");
