@@ -59,11 +59,10 @@ const Home = () => {
               <Paper key={item.id + item.createdAt} style={{ marginBottom: "16px", border: "2px solid gray" }}>
                 <div style={{ display: "flex", alignItems: "center", padding: "16px" }}>
                   <img src={item.image} alt="Item" style={{ marginRight: "16px", width: "80px", height: "80px", objectFit: "cover" }} />
-
                   <div style={{ flex: 1 }}>
                     <Typography variant="body2">{item.name}</Typography>
                     <Typography variant="body2">
-                      {dictionary["Updated At:"][lang]} {new Date(item.updatedAt).toLocaleString()}
+                      {dictionary["Created At:"][lang]} {new Date(item.createdAt).toLocaleString()}
                     </Typography>
                     <Typography variant="body2">
                       {dictionary["Collection:"][lang]} {item.collection.name}
@@ -127,7 +126,6 @@ const Home = () => {
             </div>
           )}
         </div>
-
         <div>
           {tags.length > 0 && (
             <div style={{ textAlign: "center" }}>

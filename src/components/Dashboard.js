@@ -1,21 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
-//import axios from "axios";
-import jwt_decode from "jwt-decode";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { useTheme } from "@material-ui/core/styles";
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import Button from "@mui/material/Button";
 import { API_URL } from "./Login";
-
 import { useStyles } from "../styles";
-
 import axiosJWT from "../actions/axiosJWT.js";
-import { currentUser } from "../actions/axiosJWT.js";
+
 const Dashboard = () => {
-  const [name, setName] = useState("");
-  const [token, setToken] = useState("");
-  const [expire, setExpire] = useState("");
+  const [token] = useState("");
   const [users, setUsers] = useState([]);
   const theme = useTheme();
   const classes = useStyles();

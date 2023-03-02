@@ -5,8 +5,8 @@ import axios from "axios";
 import { Typography, TextField, Grid, Button } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { Autocomplete } from "@mui/material";
-import { AuthContext, AuthProvider } from "./AuthContext";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { AuthContext } from "./AuthContext";
+import { useNavigate, useLocation } from "react-router-dom";
 import { dictionary } from "../locale/dictionary.js";
 
 const Items = () => {
@@ -17,7 +17,7 @@ const Items = () => {
   const [selectedTags, setSelectedTags] = useState([]);
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
-  const { isAuthenticated, setName, setIsAuthenticated, name, lang, setLang, theme, setTheme, role, setRole, setUserId } = useContext(AuthContext);
+  const { lang, theme } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const location = useLocation();
@@ -53,10 +53,6 @@ const Items = () => {
       setLoading(false);
     }
   };
-
-  // useEffect(() => {
-  //   setTagValue(tag || "");
-  // }, [tag]);
 
   useEffect(() => {
     if (tagFromUrl) {

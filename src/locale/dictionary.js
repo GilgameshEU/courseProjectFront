@@ -187,4 +187,8 @@ export const dictionary = {
     en: "Collections",
     ru: "Коллекции",
   },
+  "Created At:": {
+    en: "Created At:",
+    ru: "Создано:",
+  },
 };

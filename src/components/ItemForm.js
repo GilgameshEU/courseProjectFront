@@ -15,7 +15,7 @@ const ItemForm = ({ onSave, onCancel, initialValues }) => {
   const [image, setImage] = useState(initialValues.image || "");
   const [tags, setTags] = useState(initialValues.tags || "");
   const [dragging, setDragging] = useState(false);
-  const { userId, lang, isAuthenticated, role, name } = useContext(AuthContext);
+  const { lang, isAuthenticated, role, name } = useContext(AuthContext);
   const [collections, setCollections] = useState([]);
 
   const handleSave = (e) => {

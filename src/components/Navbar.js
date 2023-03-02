@@ -5,7 +5,7 @@ import { useStyles } from "../styles";
 import { AppBar, Toolbar, Typography, Button, Box, IconButton, Tooltip } from "@material-ui/core";
 import { ExitToApp as ExitToAppIcon, Home as HomeIcon, Search as SearchIcon, Brightness4 as DarkIcon, Brightness7 as LightIcon, Language } from "@material-ui/icons";
 import Flag from "react-world-flags";
-import axiosJWT, { refreshToken, logout, currentUser } from "../actions/axiosJWT.js";
+import { logout } from "../actions/axiosJWT.js";
 import jwt_decode from "jwt-decode";
 import { AuthContext, AuthProvider } from "./AuthContext";
 import { dictionary } from "../locale/dictionary.js";
@@ -51,9 +51,14 @@ const Navbar = () => {
             {isAuthenticated ? (
               <>
                 {isAdmin ? (
-                  <Button onClick={() => navigate("/myCollections")} className={classes.button}>
-                    {dictionary["All collections"][lang]}
-                  </Button>
+                  <>
+                    <Button onClick={() => navigate("/myCollections")} className={classes.button}>
+                      {dictionary["All collections"][lang]}
+                    </Button>
+                    <Button onClick={() => navigate("/Items")} className={classes.button}>
+                      {dictionary["Items"][lang]}
+                    </Button>
+                  </>
                 ) : (
                   <>
                     <Button onClick={() => navigate("/myCollections")} className={classes.button}>
@@ -106,8 +111,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
-// const handleLangChange = () => {
-//   setLang(lang === "en" ? "ru" : "en");
-//   localStorage.setItem("chosenLocale", lang);
-// };

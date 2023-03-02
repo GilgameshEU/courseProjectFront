@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Typography, Button, Grid } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import { useStyles } from "../styles";
 import { API_URL } from "./Login";
 import axios from "axios";
@@ -7,7 +7,7 @@ import { AuthContext } from "./AuthContext";
 import CollectionForm from "./CollectionForm";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { dictionary } from "../locale/dictionary.js";
 import ItemForm from "./ItemForm";
 

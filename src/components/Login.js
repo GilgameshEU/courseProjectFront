@@ -1,9 +1,8 @@
 import React, { useState, useContext } from "react";
-//import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Grid, Paper, TextField, Button } from "@material-ui/core";
 import { useStyles } from "../styles";
-import axiosJWT, { refreshToken, logout, currentUser, auth } from "../actions/axiosJWT.js";
+import { auth } from "../actions/axiosJWT.js";
 import { AuthContext } from "./AuthContext";
 import jwt_decode from "jwt-decode";
 import { dictionary } from "../locale/dictionary.js";
