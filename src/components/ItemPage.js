@@ -204,19 +204,21 @@ const ItemPage = () => {
                   </div>
                 )}
                 {comments &&
-                  comments.map((comment) => (
-                    <ListItem key={comment.id}>
-                      <ListItemAvatar>
-                        <Avatar alt={comment.user?.name} src={comment.user?.avatar} />
-                      </ListItemAvatar>
-                      <ListItemText primary={comment.user?.name} secondary={comment.comment_text} />
-                      <ListItemSecondaryAction>
-                        <Typography variant="caption" color="textSecondary">
-                          {new Date(comment.createdAt).toLocaleDateString()}
-                        </Typography>
-                      </ListItemSecondaryAction>
-                    </ListItem>
-                  ))}
+                  comments
+                    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+                    .map((comment) => (
+                      <ListItem key={comment.id}>
+                        <ListItemAvatar>
+                          <Avatar alt={comment.user?.name} src={comment.user?.avatar} />
+                        </ListItemAvatar>
+                        <ListItemText primary={comment.user?.name} secondary={comment.comment_text} />
+                        <ListItemSecondaryAction>
+                          <Typography variant="caption" color="textSecondary">
+                            {new Date(comment.createdAt).toLocaleDateString()}
+                          </Typography>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                    ))}
               </List>
             </Grid>
             <div style={{ display: "flex", alignItems: "center" }}>
