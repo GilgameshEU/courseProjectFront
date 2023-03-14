@@ -1,70 +1,17 @@
-# Getting Started with Create React App
+# Сollections management web application
+https://main.d2nb1gulmumrp7.amplifyapp.com/
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## EN
 
-## Available Scripts
+Web application for managing collections. The user can add, delete, edit collections, collection items. The registration and authentication procedure has been implemented. For each user, an access token is created, a cookie file, the password is stored in encrypted form in the database. For registered users, it is possible to comment on items, put likes. The main page displays the last added items, collections with the maximum number of items and a tag cloud, when clicked, the user is transferred to the item page with the ability to set various filters and sortings. It is possible to change the language and theme of the web application. The administrator has access to the list of users, where he can delete and edit users, appoint them as admins or block the account. He can also manage collections and items of other users.
 
-In the project directory, you can run:
+## RU
 
-### `npm start`
+Веб приложение для управления коллекциями. Пользователь может добавлять,удалять,редактировать коллекции,итемы коллекций. Реализована процедура регистрации и аутентификации. Для каждого пользователя создается токен доступа, куки файл, пароль хранится в зашифрованном виде в базе данных. Для зарегистрированных пользователей есть возможность комментировать итемы, ставить лайки. На главной странице выводятся последние добавленные итемы, коллекции с максимальным количеством итемов и облако тегов, при нажатии на которое пользователя переносит на страницу итемов с возможностью установить различные фильтры и сортировки. Есть возможность смены языка и темы веб приложения. Администратор имеет доступ к списку пользователей, где он может удалять и редактировать пользователей, назначать их админами или блокировать учетную запись. Так же он может управлять коллекциями и итемами других пользователей.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Stack
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+front-end: react+mui
 
-### `npm test`
+ back-end: node.js+express+mysql+sequelize orm
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
